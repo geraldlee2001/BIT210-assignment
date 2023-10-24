@@ -15,18 +15,16 @@ $stmt->bind_param("s", $username);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
-
-if ($user && password_verify($password, $user['password'])) {
-  // User exists and the password is correct
-  // if ($user['type'] === 'ADMIN') {
-  //   setcookie('user', $username); // Cookie expires in 1 hour
-  //   header('Location: ../'); // Redirect to a welcome page
-  //   setcookie("user", $username, time() + 3600, "/", "localhost");
-  // } else {
-  //   // User is not an admin
-  //   echo "You are not an admin.";
-  // }
+if ($user && $password === $user['password']) {
   echo $user['type'];
+  if ($user['type'] === 'ADMIN') {
+    setcookie('user', $username); // Cookie expires in 1 hour
+    header('Location: ../'); // Redirect to a welcome page
+    setcookie("user", $username, time() + 3600, "/", "localhost");
+  } else {
+    // User is not an admin
+    echo "You are not an admin.";
+  }
 } else {
   // Invalid login credentials
   echo "Invalid username or password.";
