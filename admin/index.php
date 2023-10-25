@@ -2,7 +2,7 @@
 <!-- welcome.php -->
 <?php
 // Check if the 'user' cookie exists
-if (!isset($_COOKIE['user'])) {
+if (!isset($_COOKIE['user']) && !isset($_COOKIE['role']) !== 'ADMIN') {
   header('Location: ../admin/login.html'); // Redirect to the login page if the cookie is not present
   exit;
 }

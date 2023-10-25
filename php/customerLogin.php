@@ -1,6 +1,7 @@
 <!-- process_login.php -->
 <?php
-include '../../databaseConnection.php';
+include '../databaseConnection.php';
+
 // Check if the username and password match (replace with your authentication logic)
 $username = $_POST['username'];
 $password = $_POST['password'];
@@ -17,13 +18,14 @@ $result = $stmt->get_result();
 $user = $result->fetch_assoc();
 if ($user && $password === $user['password']) {
   echo $user['type'];
-  if ($user['type'] === 'ADMIN') {
+  if ($user['type'] === 'CUSTOMER') {
     setcookie('user', $username); // Cookie expires in 1 hour
-    header('Location: ../'); // Redirect to a welcome page
+    header('Location: ../product.php'); // Redirect to a welcome page
     setcookie("user", $username, time() + 3600, "/", "localhost");
+    setcookie("role", $user['type'], time() + 3600, "/", "localhost");
   } else {
     // User is not an admin
-    echo "You are not an admin.";
+    echo "You are not a customer.";
   }
 } else {
   // Invalid login credentials
