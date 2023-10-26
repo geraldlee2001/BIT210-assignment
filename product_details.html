@@ -163,16 +163,17 @@
                 </select>
               </div>
               <!-- col.// -->
+
+             
+            
               <div class="col-md-4 col-6 mb-3">
                 <label class="mb-2 d-block">Quantity</label>
                 <div class="input-group mb-3" style="width: 170px;">
-                  <button class="btn btn-white border border-secondary px-3" type="button" id="button-addon1" data-mdb-ripple-color="dark">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <input type="text" class="form-control text-center border border-secondary" placeholder="14" aria-label="Example text with button addon" aria-describedby="button-addon1" />
-                  <button class="btn btn-white border border-secondary px-3" type="button" id="button-addon2" data-mdb-ripple-color="dark">
-                    <i class="fas fa-plus"></i>
-                  </button>
+                  <div class="wrapper">
+                    <span class="minus">-</span>
+                    <span class="num">01</span>
+                    <span class="plus">+</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -422,11 +423,52 @@
       </div>
 
       <script>
-        $(document).ready(function() {
-          $('#carouselMultiItemExample').carousel();
+        const plus = document.querySelector(".plus");
+        const minus = document.querySelector(".minus");
+        const num = document.querySelector(".num");
+        let a = 1;
+
+        plus.addEventListener("click", () =>{
+            a++;
+            a = (a<10) ? "0" + a:a;
+            num.innerText=a;
+            console.log(a);
         });
-        </script>
-        
+
+        minus.addEventListener("click", ()=>{
+            if(a>1){
+                a--;
+                a = (a<10) ? "0" + a:a;
+                num.innerText=a;
+            }
+        });
+      </script>
+
+      <style>
+        .wrapper{
+        height: 35px;
+        min-width: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #FFF;
+        border-radius: 10px;
+        box-shadow: 0 5px 5px rgba(0,0,0,0.2);
+      }
+
+      .wrapper span{
+        width: 20%;
+        text-align: center;
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .wrapper span.num{
+        font-size: 20px;
+        border-right: 2px solid rgba(0,0,0,0.2);
+        border-left: 2px solid rgba(0,0,0,0.2);
+      }
+      </style>
   </footer>
   <!-- Footer -->
       <!-- Bootstrap core JS-->
