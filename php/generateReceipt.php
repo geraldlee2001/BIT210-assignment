@@ -1,5 +1,5 @@
 <?php
-require_once('./vendor/tecnickcom/tcpdf/tcpdf.php');
+require_once('../vendor/tecnickcom/tcpdf/tcpdf.php');
 
 
 // Replace these variables with your actual data

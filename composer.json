@@ -11,5 +11,8 @@
             "email": "geraldlee168168@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "ramsey/uuid": "^4.7",
+        "tecnickcom/tcpdf": "^6.6"
+    }
 }

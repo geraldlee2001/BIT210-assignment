@@ -1,6 +1,6 @@
 <!-- process_login.php -->
 <?php
-include '../../databaseConnection.php';
+include '../../php/databaseConnection.php';
 // Check if the username and password match (replace with your authentication logic)
 $username = $_POST['username'];
 $password = $_POST['password'];
