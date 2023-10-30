@@ -1,0 +1,15 @@
+{
+    "name": "user/bit210-assignment",
+    "autoload": {
+        "psr-4": {
+            "User\\Bit210Assignment\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "geraldlee2001",
+            "email": "geraldlee168168@gmail.com"
+        }
+    ],
+    "require": {}
+}
