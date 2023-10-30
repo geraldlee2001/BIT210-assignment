@@ -7,7 +7,7 @@ $username = $_POST['username'];
 $password = $_POST['password'];
 
 // Securely hash the user's password and store it in the database
-$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+$hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
 // Query the database to retrieve the user's information
 $query = "SELECT * FROM user WHERE userName = ?";
@@ -16,7 +16,7 @@ $stmt->bind_param("s", $username);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
-if ($user && $password === $user['password']) {
+if ($user && password_verify($password, $user['password'])) {
   echo $user['type'];
   if ($user['type'] === 'CUSTOMER') {
     setcookie('user', $username); // Cookie expires in 1 hour
