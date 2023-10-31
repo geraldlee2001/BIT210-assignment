@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Edit Profile</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/custom-style.css">
+
+    <link rel="stylesheet" href="css/customer-profile.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Customer Profile</h1><br>
+        <div class="row">
+            <div class="col-md-6">
+                <form id="profileForm" action="##" id="CustomerProfile">
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="fullName" name="fullName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="birthday" class="form-label">Birthday</label>
+                        <input type="date" class="form-control" id="birthday" name="birthday">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phoneNumber" class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Edit</button>
+
+                    <div id="success-message" style="display: none;">
+                        <p class="alert alert-success">Profile edit successfully!</p>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Your favorite tourism <i class="fa fa-link fa-1x"></i></div><br>
+                    <div class="panel-body"><a href="http://bootnipets.com">Sunway Lagoon</a></div>
+                </div>
+
+                <ul class="list-group">
+                    <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Shares</strong></span> 125</li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Likes</strong></span> 13</li>
+                    <li class="list-group-item text-right"><span class "pull-left"><strong>Comments</strong></span> 37</li>
+                    <li class="list-group-item text-right"><span class="pull-left"><strong>Followers</strong></span> 78</li>
+                </ul>
+
+                <div class="panel panel-default"><br>
+                    <div class="panel-heading">Your Social Media</div><br>
+                    <div class="panel-body">
+                        <i class="fab fa-facebook fa-2x"></i>
+                        <i class="fab fa-github fa-2x"></i>
+                        <i class="fab fa-twitter fa-2x"></i>
+                        <i class="fab fa-pinterest fa-2x"></i>
+                        <i class="fab fa-google-plus fa-2x"></i><br>
+                        <a href="https://www.instagram.com/?hl=en">Login instagram</a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="js/customer-profile.js"></script>
+</body>
+</html>
