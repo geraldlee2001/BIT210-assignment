@@ -35,9 +35,8 @@
                         </button>
                     </li>
                     <li class="nav-item">
-                        <?php echo
-                        @!!$_COOKIE['user'] ? "<a class=\"btn btn-primary w-20\"> " . $_COOKIE['user'] . "</a>"
-                            : ' <a class="btn btn-primary w-20" href="./login.html">Login</a>';
+                        <?php require_once './vendor/autoload.php';
+                        @!!include './php/decodeToken.php';
                         ?>
                     </li>
                 </ul>

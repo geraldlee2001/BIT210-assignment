@@ -1,3 +1,6 @@
+/** @format */
+
+// @ts-nocheck
 /**
  * !
  * Start Bootstrap - Agency v7.0.12 (https://startbootstrap.com/theme/agency)
@@ -10,6 +13,42 @@
 //
 // Scripts
 //
+// JavaScript to show/hide the modal
+var modal = document.getElementById("myModal");
+var showModalButton = document.getElementById("profile");
+
+showModalButton.addEventListener("click", function () {
+  modal.style.display = "block";
+});
+
+// Close the modal when clicking outside the content
+modal.addEventListener("click", function (e) {
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
+});
+
+// Close the modal when the "Logout" button is clicked
+var logoutButton = document.getElementById("logout-button");
+logoutButton.addEventListener("click", function () {
+  modal.style.display = "none";
+});
+
+// Implement actions for "Profile" and "Settings" buttons
+var profileButton = document.getElementById("profile-button");
+var settingsButton = document.getElementById("settings-button");
+
+profileButton.addEventListener("click", function () {
+  // Implement the profile action here
+  alert("Profile action");
+  modal.style.display = "none";
+});
+
+settingsButton.addEventListener("click", function () {
+  // Implement the settings action here
+  alert("Settings action");
+  modal.style.display = "none";
+});
 
 window.addEventListener("DOMContentLoaded", (event) => {
   // Navbar shrink function

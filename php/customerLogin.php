@@ -1,7 +1,12 @@
 <!-- process_login.php -->
 <?php
-include '../databaseConnection.php';
+include './databaseConnection.php';
+require_once '../vendor/autoload.php';
 
+use Firebase\JWT\JWT;
+
+// Your secret key
+$key = 'bit210';
 // Check if the username and password match (replace with your authentication logic)
 $username = $_POST['username'];
 $password = $_POST['password'];
@@ -21,8 +26,16 @@ if ($user && password_verify($password, $user['password'])) {
   if ($user['type'] === 'CUSTOMER') {
     setcookie('user', $username); // Cookie expires in 1 hour
     header('Location: ../product.php'); // Redirect to a welcome page
-    setcookie("user", $username, time() + 3600, "/", "localhost");
-    setcookie("role", $user['type'], time() + 3600, "/", "localhost");
+    // Payload data
+    $payload = array(
+      "username" =>  $user["userName"],
+      "role" => $user['type'],
+    );
+
+    // Generate the JWT
+    $token = JWT::encode($payload, $key, 'HS256');
+    setcookie("token",  $token, time() + 3600, "/", "localhost");
+    // setcookie("role", $user['type'], time() + 3600, "/", "localhost");
   } else {
     // User is not an admin
     echo "You are not a customer.";

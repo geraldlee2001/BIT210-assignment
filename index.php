@@ -45,15 +45,22 @@
             <a class="nav-link" href="#contact">Contact</a>
           </li>
           <li class="nav-item">
-            <?php echo
-            @!!$_COOKIE['user'] ? "<a class=\"btn btn-primary w-20\"> " . $_COOKIE['user'] . "</a>"
-              : ' <a class="btn btn-primary w-20" href="./login.html">Login</a>';
+            <?php require_once './vendor/autoload.php';
+            @!! include './php/decodeToken.php';
             ?>
           </li>
         </ul>
+
       </div>
     </div>
   </nav>
+  <div class="modal" id="myModal">
+    <div class="modal-content">
+      <button class="btn" id="profile-button">Profile</button>
+      <button class="btn" id="settings-button">Settings</button>
+      <button class="btn" id="logout-button">Logout</button>
+    </div>
+  </div>
   <!-- Masthead-->
   <header class="masthead">
     <div class="container">
