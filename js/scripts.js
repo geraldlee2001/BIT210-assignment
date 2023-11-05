@@ -31,7 +31,13 @@ modal.addEventListener("click", function (e) {
 // Close the modal when the "Logout" button is clicked
 var logoutButton = document.getElementById("logout-button");
 logoutButton.addEventListener("click", function () {
+  document.cookie.split(";").forEach(function (c) {
+    document.cookie = c
+      .replace(/^ +/, "")
+      .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+  });
   modal.style.display = "none";
+  location.reload(true);
 });
 
 // Implement actions for "Profile" and "Settings" buttons

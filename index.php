@@ -46,21 +46,22 @@
           </li>
           <li class="nav-item">
             <?php require_once './vendor/autoload.php';
-            @!! include './php/decodeToken.php';
+            @!!include './php/decodeToken.php';
             ?>
+            <div class="modal" id="myModal">
+              <div class="modal-content">
+                <button class="btn" id="profile-button">Profile</button>
+                <button class="btn" id="settings-button">Settings</button>
+                <button class="btn" id="logout-button">Logout</button>
+              </div>
+            </div>
           </li>
         </ul>
 
       </div>
     </div>
   </nav>
-  <div class="modal" id="myModal">
-    <div class="modal-content">
-      <button class="btn" id="profile-button">Profile</button>
-      <button class="btn" id="settings-button">Settings</button>
-      <button class="btn" id="logout-button">Logout</button>
-    </div>
-  </div>
+
   <!-- Masthead-->
   <header class="masthead">
     <div class="container">

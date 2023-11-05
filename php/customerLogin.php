@@ -13,7 +13,7 @@ $password = $_POST['password'];
 
 // Securely hash the user's password and store it in the database
 $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
+echo $hashedPassword;
 // Query the database to retrieve the user's information
 $query = "SELECT * FROM user WHERE userName = ?";
 $stmt = $conn->prepare($query);
