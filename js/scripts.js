@@ -37,7 +37,9 @@ logoutButton.addEventListener("click", function () {
       .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
   });
   modal.style.display = "none";
-  location.reload(true);
+  window.location.pathname === "/"
+    ? location.reload()
+    : (window.location.href = "/");
 });
 
 // Implement actions for "Profile" and "Settings" buttons
@@ -99,6 +101,3 @@ window.addEventListener("DOMContentLoaded", (event) => {
   });
 });
 
-function onSubmitForm() {
-  console.log("123");
-}
