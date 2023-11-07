@@ -3,6 +3,7 @@
 include './databaseConnection.php';
 require_once '../vendor/autoload.php';
 
+
 use Firebase\JWT\JWT;
 
 // Your secret key
