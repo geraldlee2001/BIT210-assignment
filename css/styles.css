@@ -13205,7 +13205,7 @@ section#contact form#contactForm :-ms-input-placeholder {
   padding-bottom: 15px;
 }
 
-.modal {
+#myModal .modal {
   display: none;
   position: fixed;
   top: 0;
@@ -13214,7 +13214,7 @@ section#contact form#contactForm :-ms-input-placeholder {
   height: 100%;
 }
 
-.modal-content {
+#myModal .modal-content {
   background-color: var(--bs-primary);
   width: 100px;
   margin-left: auto;
@@ -13223,7 +13223,7 @@ section#contact form#contactForm :-ms-input-placeholder {
   text-align: center;
 }
 
-.modal::before {
+#myModal .modal::before {
   content: "";
   position: absolute;
   bottom: 100%;

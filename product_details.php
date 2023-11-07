@@ -1,5 +1,5 @@
 <!-- @format -->
-
+\
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,33 +25,8 @@
 
 <body id="page-top">
   <!-- Navigation-->
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand" href="../"><img src="assets/img/navbar-logo.svg" alt="..." /></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        Menu
-        <i class="fas fa-bars ms-1"></i>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+  <?php include "./component/header.php" ?>
 
-          <li class="nav-item">
-            <button class="btn btn-primary" type="submit">
-              <i class="bi-cart-fill me-1"></i>
-              Cart
-              <span class="badge bg-yellow text-white ms-1 rounded-pill">0</span>
-            </button>
-          </li>
-          <li class="nav-item">
-            <!-- <?php echo
-                  @!!$_COOKIE['user'] ? "<a class=\"btn btn-primary w-20\"> " . $_COOKIE['user'] . "</a>"
-                    : ' <a class="btn btn-primary w-20" href="./login.html">Login</a>';
-                  ?> -->
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
   <!-- content -->
   <section class="py-5 mt-6">
     <div class="container">
@@ -497,5 +472,15 @@
   <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
   <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
 </body>
+<!-- to over write the default styling -->
+<style>
+  #mainNav {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    border: none;
+    background-color: #212529;
+    transition: padding-top 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
+  }
+</style>
 
 </html>
