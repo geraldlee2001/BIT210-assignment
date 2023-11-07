@@ -13,6 +13,7 @@
     ],
     "require": {
         "ramsey/uuid": "^4.7",
-        "tecnickcom/tcpdf": "^6.6"
+        "tecnickcom/tcpdf": "^6.6",
+        "firebase/php-jwt": "^6.9"
     }
 }
