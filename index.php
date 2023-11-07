@@ -542,7 +542,7 @@
                 </p>
                 <ul class="list-inline">
                   <li>
-                    <a href="product_details.html?id=1">Click to view details</a>
+                    <a href="product_details.php?id=1">Click to view details</a>
                     <br><strong>Category:</strong>
                     Water Theme Park
                   </li>
