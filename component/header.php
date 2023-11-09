@@ -1,6 +1,6 @@
  <!-- Navigation-->
 
- <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+ <nav class="navbar navbar-expand-lg navbar-dark fixed-top " id="mainNav">
    <div class="container">
      <a class="navbar-brand" href="../"><img src="assets/img/navbar-logo.svg" alt="..." /></a>
      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,7 +9,8 @@
      </button>
      <div class="collapse navbar-collapse" id="navbarResponsive">
        <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-         <?php switch ($_SERVER['REQUEST_URI']) {
+         <?php
+          switch ($_SERVER['REQUEST_URI']) {
             case "/":
               echo ' <li class="nav-item">
           <a class="nav-link" href="/product.php">Product</a>
@@ -31,6 +32,13 @@
           </li>';
               break;
             default:
+              echo  $_COOKIE['token'] ? '  <li class="nav-item">
+            <button class="btn btn-primary" type="submit">
+                <i class="bi-cart-fill me-1"></i>
+                Cart
+                <span class="badge bg-yellow text-white ms-1 rounded-pill">0</span>
+            </button>
+            </li>' : null;
               break;
           }
           ?>
