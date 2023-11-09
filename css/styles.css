@@ -13204,3 +13204,32 @@ section#contact form#contactForm :-ms-input-placeholder {
   padding-top: 5px;
   padding-bottom: 15px;
 }
+
+#myModal .modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#myModal .modal-content {
+  background-color: var(--bs-primary);
+  width: 100px;
+  margin-left: auto;
+  margin-right: 120px;
+  margin-top: 65px;
+  text-align: center;
+}
+
+#myModal .modal::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent #fff transparent;
+  transform: translateX(-50%);
+}
