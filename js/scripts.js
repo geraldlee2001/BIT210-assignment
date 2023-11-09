@@ -48,8 +48,7 @@ var settingsButton = document.getElementById("settings-button");
 
 profileButton.addEventListener("click", function () {
   // Implement the profile action here
-  alert("Profile action");
-  modal.style.display = "none";
+  window.location.href = "/profile.php";
 });
 
 settingsButton.addEventListener("click", function () {
@@ -100,4 +99,3 @@ window.addEventListener("DOMContentLoaded", (event) => {
     });
   });
 });
-
