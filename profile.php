@@ -1,7 +1,28 @@
+<?php
+include "./php/databaseConnection.php";
+require_once './vendor/autoload.php';
+
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
+// Your secret key (must match the one used for encoding)
+$key = 'bit210';
+
+// The JWT you want to decode\
+if ($_COOKIE['token']) {
+  $jwt = $_COOKIE['token']; // Replace with the actual JWT you want to decode
+  $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
+  $query = "SELECT * FROM customer where id = \"$decoded->customerId\"";
+  $result = $conn->query($query);
+  $data = $result->fetch_assoc();
+}
+?>
+
 <head>
   <title>Profile</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.6/jquery.inputmask.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
@@ -14,7 +35,7 @@
 <div class="container bootstrap snippet mt-6">
   <div class="row">
     <div class="col-sm-10 mt-2">
-      <h1>User name</h1>
+      <?php echo '<h1 >' . strtoupper($decoded->username) . '</h1>' ?>
     </div>
   </div>
   <div class="row mt-3">
@@ -42,7 +63,9 @@
                 <label for="first_name">
                   <h4>Full Name</h4>
                 </label>
-                <input type="text" class="form-control" name="fullName" id="first_name" placeholder="Full name" title="enter your full name">
+
+                <input type="text" class="form-control" name="fullName" id="first_name" placeholder="Full name" value="<?php echo  $data['fullName']  ?>" title="enter your full name">
+
               </div>
             </div>
 
@@ -52,7 +75,9 @@
                 <label for="phone">
                   <h4>Phone</h4>
                 </label>
-                <input type="text" class="form-control" name="phoneNumber" id="phone" placeholder="enter phone" title="enter your phone number if any.">
+                <?php
+                echo '<input type="text" class="form-control" name="phoneNumber" id="phone" placeholder="enter phone" value=' . $data['phoneNumber'] . ' title="enter your phone number if any.">'
+                ?>
               </div>
             </div>
 
@@ -63,7 +88,9 @@
                 <label for="email">
                   <h4>Email</h4>
                 </label>
-                <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
+                <?php
+                echo '<input type="email" class="form-control" name="email" id="email" placeholder="enter email" value=' . $data['email'] . ' title="enter your email.">'
+                ?>
               </div>
             </div>
 
@@ -73,7 +100,9 @@
                 <label for="birthday">
                   <h4>Birthday</h4>
                 </label>
-                <input type="date" class="form-control" name="birthday" id="birthday" placeholder="DD/MM/YYYY" title="Select your birthday">
+                <?php
+                echo '<input type="date" pattern="\d{1,2}/\d{1,2}/\d{4}" class="form-control" name="birthday" id="birthday" placeholder="DD/MM/YYYY" title="Select your birthday" value=' . $data['birthday'] . '>'
+                ?>
               </div>
             </div>
 
@@ -136,6 +165,12 @@
 
     $(".file-upload").on('change', function() {
       readURL(this);
+    });
+  });
+
+  $(document).ready(function() {
+    $('#myDate').inputmask('99/99/9999', {
+      placeholder: 'dd/mm/yyyy'
     });
   });
 </script>
