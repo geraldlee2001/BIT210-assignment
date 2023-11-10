@@ -8,6 +8,7 @@
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
   <link rel="stylesheet" href="css/cartList.css">
   <script src="js/cartList.js"></script>
 
@@ -30,10 +31,7 @@
 
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h3 class="fw-normal mb-0 text-black">Shopping Cart</h3>
-          <div>
-            <p class="mb-0"><span class="text-muted">Sort by:</span> <a href="#!" class="text-body">price <i
-                  class="fas fa-angle-down mt-1"></i></a></p>
-          </div>
+
         </div>
 
         <div class="card rounded-3 mb-4">
@@ -55,7 +53,7 @@
                 </button>
 
                 <input id="form1" min="0" name="quantity" value="2" type="number"
-                  class="form-control form-control-sm" />
+                  class="form-control form-control-sm" style="text-align: center;" />
 
                 <button class="btn btn-link px-2"
                   onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
@@ -91,7 +89,7 @@
                 </button>
 
                 <input id="form1" min="0" name="quantity" value="2" type="number"
-                  class="form-control form-control-sm" />
+                  class="form-control form-control-sm" style="text-align: center;" />
 
                 <button class="btn btn-link px-2"
                   onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
@@ -128,7 +126,7 @@
                 </button>
 
                 <input id="form1" min="0" name="quantity" value="2" type="number"
-                  class="form-control form-control-sm" />
+                  class="form-control form-control-sm" style="text-align: center;" />
 
                 <button class="btn btn-link px-2"
                   onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
@@ -153,6 +151,7 @@
                   src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
                   class="img-fluid rounded-3" alt="Cotton T-shirt">
               </div>
+
               <div class="col-md-3 col-lg-3 col-xl-3">
                 <p class="lead fw-normal mb-2">Basic T-shirt</p>
                 <p><span class="text-muted">Size: </span>M <span class="text-muted">Color: </span>Grey</p>
@@ -162,9 +161,9 @@
                   onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
                   <i class="fas fa-minus"></i>
                 </button>
-
+                
                 <input id="form1" min="0" name="quantity" value="2" type="number"
-                  class="form-control form-control-sm" />
+                  class="form-control form-control-sm" style="text-align: center;" />
 
                 <button class="btn btn-link px-2"
                   onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
@@ -182,14 +181,12 @@
         </div>
 
         <div class="card mb-4">
-          <div class="card-body p-4 d-flex flex-row">
-            <div class="form-outline flex-fill">
-              <label class="form-label" for="form1">Enter your discount code</label>
-              <input type="text" id="form1" class="form-control form-control-lg" style="width: 780px ;" />
-            </div>
-            <button type="button" class="btn btn-outline-warning btn-sm ms-3" style="width: 80px; height: 50px; margin-top: 30px;">Apply</button>
+        <div class="card-body p-4 d-flex flex-row">
+          <div class="form-outline flex-fill align-self-end">
+            <label class="form-label text-end" for="form1"><strong  style="margin-left: 42rem;">Total Price: $900.00</strong></label>
           </div>
         </div>
+      </div>
 
         <div class="card">
           <div class="card-body">
