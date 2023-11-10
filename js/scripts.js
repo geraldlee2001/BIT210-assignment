@@ -15,6 +15,7 @@
 //
 // JavaScript to show/hide the modal
 var modal = document.getElementById("myModal");
+var cartBtn = document.getElementById("cartBtn");
 var showModalButton = document.getElementById("profile");
 
 showModalButton.addEventListener("click", function () {
@@ -98,4 +99,8 @@ window.addEventListener("DOMContentLoaded", (event) => {
       }
     });
   });
+});
+
+cartBtn .addEventListener("click", function () {
+  window.location.href = "/cart.php";
 });

@@ -1,20 +1,29 @@
-var quantityButtons = document.querySelectorAll('.btn-link');
+/** @format */
 
+// @ts-nocheck
 
-quantityButtons.forEach(function (button) {
-button.addEventListener('click', function () {
+const increaseQuantity = (button) => {
+  var form = button.closest(".cart-item-form");
+  var currentQuantitySpan = form.querySelector(".current-quantity");
 
-    var inputElement = this.parentNode.querySelector('input[type=number]');
+  var currentQuantity = parseInt(currentQuantitySpan.innerText);
+  var newQuantity = currentQuantity + 1;
 
+  currentQuantitySpan.innerText = newQuantity;
 
-    if (inputElement) {
-    if (this.classList.contains('px-2')) {
-        // If the button is minus, decrement the value
-        inputElement.stepDown();
-    } else {
-        // If the button is plus, increment the value
-        inputElement.stepUp();
-    }
-    }
-});
-});
+  // Enable the submit button and trigger the form submission
+  form.querySelector('input[type="submit"]').click();
+};
+
+const decreaseQuantity = (button) => {
+  var form = button.closest(".cart-item-form");
+  var currentQuantitySpan = form.querySelector(".current-quantity");
+
+  var currentQuantity = parseInt(currentQuantitySpan.innerText);
+  var newQuantity = currentQuantity - 1;
+
+  currentQuantitySpan.innerText = newQuantity;
+
+  // Enable the submit button and trigger the form submission
+  form.querySelector('input[type="submit"]').click();
+};
