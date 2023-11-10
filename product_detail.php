@@ -26,7 +26,7 @@ WHERE r.productId = \"$data[ID]\";";
   for ($i = 0; $i < $reviewRatingCheck->num_rows; $i++) {
     $totalRating += $reviewRatingCheck->fetch_assoc()['review_rating'];
   }
-  $finalRating = $totalRating / $reviews->num_rows;
+  $finalRating = $reviews->num_rows > 0 ? $totalRating / $reviews->num_rows : 0;
 }
 
 ?>
@@ -100,9 +100,9 @@ WHERE r.productId = \"$data[ID]\";";
                 <label class="mb-2 d-block">Quantity</label>
                 <div class="input-group mb-3" style="width: 170px;">
                   <div class="wrapper">
-                    <span class="minus">-</span>
+                    <span id="minus">-</span>
                     <input type="number" class="num w-50" id="num" value=0>
-                    <span class="plus">+</span>
+                    <span id="plus">+</span>
                   </div>
                 </div>
               </div>
