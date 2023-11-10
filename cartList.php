@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shopping Cart</title>
 
-  <!-- Add Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link rel="stylesheet" href="css/cartList.css">
   <script src="js/cartList.js"></script>
 
@@ -16,7 +16,6 @@
 <body>
 
   <section class="h-100" style="background-color: #eee;">
-    <!-- Your existing HTML content goes here -->
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -108,6 +107,7 @@
             </div>
           </div>
         </div>
+          
 
         <div class="card rounded-3 mb-4">
           <div class="card-body p-4">
@@ -184,10 +184,10 @@
         <div class="card mb-4">
           <div class="card-body p-4 d-flex flex-row">
             <div class="form-outline flex-fill">
-              <input type="text" id="form1" class="form-control form-control-lg" />
-              <label class="form-label" for="form1">Discount code</label>
+              <label class="form-label" for="form1">Enter your discount code</label>
+              <input type="text" id="form1" class="form-control form-control-lg" style="width: 780px ;" />
             </div>
-            <button type="button" class="btn btn-outline-warning btn-lg ms-3">Apply</button>
+            <button type="button" class="btn btn-outline-warning btn-sm ms-3" style="width: 80px; height: 50px; margin-top: 30px;">Apply</button>
           </div>
         </div>
 
