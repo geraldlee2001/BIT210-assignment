@@ -5,12 +5,14 @@ $query = "SELECT
 p.id AS product_id,
 p.name AS product_name,
 p.productCode AS product_code,
+p.amount AS product_amount,
 p.price AS product_price,
 p.imageUrl AS product_imageUrl,
 ROUND(AVG(r.rating), 1) AS product_rating
 FROM product p
-JOIN review r ON p.id = r.productId
-GROUP BY p.id, p.name, p.productCode, p.price, p.imageUrl";
+LEFT JOIN review r ON p.id = r.productId
+WHERE p.amount > 0
+GROUP BY p.id, p.name, p.productCode, p.amount, p.price, p.imageUrl;";
 $data = $conn->query($query);
 
 
@@ -101,5 +103,13 @@ $data = $conn->query($query);
     a {
         color: black;
         text-decoration: none;
+    }
+
+    #mainNav {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+        border: none;
+        background-color: #212529;
+        transition: padding-top 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
     }
 </style>

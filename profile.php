@@ -16,6 +16,25 @@ if ($_COOKIE['token']) {
   $result = $conn->query($query);
   $data = $result->fetch_assoc();
 }
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+  // Check if the username exists
+  $fullName = $_POST['fullName']; // Replace with the username to check
+  $email = $_POST['email']; // Replace with the username to check
+  $phoneNumber = $_POST['phoneNumber'];
+  $birthday = $_POST['birthday'];
+
+  $sql = "UPDATE customer
+  SET fullName =  '$fullName', email = '$email', phoneNumber = '$phoneNumber', birthday='$birthday'
+  WHERE id = \"$decoded->customerId\"";
+  echo $sql;
+  if ($conn->query($sql) === TRUE) {
+    echo  "<script>alert('Registration Successful');</script>";
+    header('Location: ../'); // Redirect to a welcome page
+  } else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+  }
+}
 ?>
 
 <head>
@@ -56,20 +75,15 @@ if ($_COOKIE['token']) {
       <div class="tab-content">
         <div class="tab-pane active" id="home">
           <hr>
-          <form class="form" action="##" id="registrationForm">
+          <form class="form" action="profile.php" method="post" id="registrationForm">
             <div class="form-group">
-
               <div class="col-xs-12">
                 <label for="first_name">
                   <h4>Full Name</h4>
                 </label>
-
                 <input type="text" class="form-control" name="fullName" id="first_name" placeholder="Full name" value="<?php echo  $data['fullName']  ?>" title="enter your full name">
-
               </div>
             </div>
-
-
             <div class="form-group">
               <div class="col-xs-12">
                 <label for="phone">
@@ -80,10 +94,7 @@ if ($_COOKIE['token']) {
                 ?>
               </div>
             </div>
-
-
             <div class="form-group">
-
               <div class="col-xs-12">
                 <label for="email">
                   <h4>Email</h4>
@@ -93,9 +104,7 @@ if ($_COOKIE['token']) {
                 ?>
               </div>
             </div>
-
             <div class="form-group">
-
               <div class="col-xs-6">
                 <label for="birthday">
                   <h4>Birthday</h4>
@@ -105,14 +114,10 @@ if ($_COOKIE['token']) {
                 ?>
               </div>
             </div>
-
-
-
-
             <div class="form-group">
               <div class="col-xs-12">
                 <br>
-                <button class="btn btn-lg btn-success" type="submit" id="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
+                <button class="btn btn-lg btn-primary" type="submit" id="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
                 <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
               </div>
             </div>

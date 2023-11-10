@@ -11,6 +11,7 @@
        <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
          <?php
           switch ($_SERVER['REQUEST_URI']) {
+            case "/index.php":
             case "/":
               echo ' <li class="nav-item">
           <a class="nav-link" href="/product.php">Product</a>
@@ -32,7 +33,7 @@
           </li>';
               break;
             default:
-              echo  $_COOKIE['token'] ? '  <li class="nav-item">
+              echo   @!!$_COOKIE['token'] ? '  <li class="nav-item">
             <button class="btn btn-primary" type="submit">
                 <i class="bi-cart-fill me-1"></i>
                 Cart

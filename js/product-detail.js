@@ -11,13 +11,6 @@ openModalButtons.forEach((button) => {
   });
 });
 
-overlay.addEventListener("click", () => {
-  const modals = document.querySelectorAll(".modal.active");
-  modals.forEach((modal) => {
-    closeModal(modal);
-  });
-});
-
 closeModalButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const modal = button.closest(".modal");
@@ -28,24 +21,21 @@ closeModalButtons.forEach((button) => {
 function openModal(modal) {
   if (modal == null) return;
   modal.classList.add("active");
-  overlay.classList.add("active");
 }
 
 function closeModal(modal) {
   if (modal == null) return;
   modal.classList.remove("active");
-  overlay.classList.remove("active");
 }
 
-const plus = document.querySelector(".plus");
-const minus = document.querySelector(".minus");
+const plus = document.getElementById("plus");
+const minus = document.getElementById("minus");
 const num = document.querySelector(".num");
 let a = parseInt(num.value);
 
 plus.addEventListener("click", () => {
   a++;
   num.value = a;
-  console.log(a);
 });
 
 minus.addEventListener("click", () => {
