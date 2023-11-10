@@ -24,22 +24,8 @@
         </li>';
               break;
             case "/product.php":
-              echo '  <li class="nav-item">
-              <button class="btn btn-primary" type="submit">
-                  <i class="bi-cart-fill me-1"></i>
-                  Cart
-                  <span class="badge bg-yellow text-white ms-1 rounded-pill">0</span>
-              </button>
-          </li>';
-              break;
             default:
-              echo   @!!$_COOKIE['token'] ? '  <li class="nav-item">
-            <button class="btn btn-primary" type="submit">
-                <i class="bi-cart-fill me-1"></i>
-                Cart
-                <span class="badge bg-yellow text-white ms-1 rounded-pill">0</span>
-            </button>
-            </li>' : null;
+              echo   @!!$_COOKIE['token'] ? include "./component/cartButton.php" : null;
               break;
           }
           ?>
@@ -47,7 +33,7 @@
          <li class="nav-item">
            <div class="flex">
              <?php require_once './vendor/autoload.php';
-              @!!include './php/decodeToken.php';
+              @!!include './component/profileButton.php';
               ?>
              <div class="modal" id="myModal">
                <div class="modal-content">
