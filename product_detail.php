@@ -1,7 +1,14 @@
 <!-- @format -->
-<?php include "./php/databaseConnection.php";
+<?php
+include "./php/databaseConnection.php";
+include "./php/tokenDecoding.php";
+
+use Ramsey\Uuid\Uuid;
+
+$cartItemId = Uuid::uuid4();
 
 $id = $_GET['id'];
+
 if ($id) {
   $query = "SELECT * FROM product where productCode = \"$id\"";
   $result = $conn->query($query);
@@ -28,6 +35,7 @@ WHERE r.productId = \"$data[ID]\";";
   }
   $finalRating = $reviews->num_rows > 0 ? $totalRating / $reviews->num_rows : 0;
 }
+
 
 ?>
 
@@ -73,43 +81,46 @@ WHERE r.productId = \"$data[ID]\";";
         </aside>
         <main class="col-lg-6">
           <div class="ps-lg-3">
-            <?php echo "<h1 class=\"fw-bolder mb-3\">$data[name]</h1>" ?>
-
-            <div class="d-flex flex-row my-3">
-              <div class="text-warning mb-1 me-2">
-                <i class="fa fa-star"></i>
-                <span class="ms-1">
-                  <?php echo $finalRating   ?>
-                </span>
+            <form action="./php/addToCart.php" method="post">
+              <?php echo "<h1 class=\"fw-bolder mb-3\">$data[name]</h1>" ?>
+              <div class="d-flex flex-row my-3">
+                <div class="text-warning mb-1 me-2">
+                  <i class="fa fa-star"></i>
+                  <span class="ms-1">
+                    <?php echo $finalRating   ?>
+                  </span>
+                </div>
+                <span class="text-muted"><i class="fas fa-shopping-basket fa-sm mx-1"></i> <?php echo $data['amount']; ?> remains</span>
+                <span class="text-success ms-2">Available</span>
               </div>
-              <span class="text-muted"><i class="fas fa-shopping-basket fa-sm mx-1"></i> <?php echo $data['amount']; ?> remains</span>
-              <span class="text-success ms-2">Available</span>
-            </div>
 
-            <div class="mb-3">
-              <?php echo "<span class=\"h5\">RM $data[price]</span>" ?>
+              <div class="mb-3">
+                <?php echo "<span class=\"h5\">RM $data[price]</span>" ?>
 
-            </div>
-            <?php echo "<p class=\"mb-4\">$data[description]</p>" ?>
+              </div>
+              <?php echo "<p class=\"mb-4\">$data[description]</p>" ?>
 
-            <hr />
+              <hr />
 
-            <div class="row mb-4">
+              <div class="row mb-4">
 
-              <div class="col-md-4 col-6 mb-3">
-                <label class="mb-2 d-block">Quantity</label>
-                <div class="input-group mb-3" style="width: 170px;">
-                  <div class="wrapper">
-                    <span id="minus">-</span>
-                    <input type="number" class="num w-50" id="num" value=0>
-                    <span id="plus">+</span>
+                <div class="col-md-4 col-6 mb-3">
+                  <label class="mb-2 d-block">Quantity</label>
+                  <div class="input-group mb-3" style="width: 170px;">
+                    <div class="wrapper">
+                      <span id="minus">-</span>
+                      <input type="number" class="num w-50" id="num" value=1 name='quantity'>
+                      <span id="plus">+</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <a href="#" class="btn btn-warning shadow-0"> Buy now</a>
-            <a href="#" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart </a>
+              <input type="hidden" class="form-control" name="productId" value="<?php echo $data['ID'] ?>">
+              <button type="submit" class="btn btn-primary btn-block align-items-end">
+                <i class="me-1 fa fa-shopping-basket"></i> Add to cart
+              </button>
 
+            </form>
           </div>
         </main>
       </div>
