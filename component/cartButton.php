@@ -6,10 +6,10 @@ $cartId = $decoded->cartId;
 $query = "SELECT COUNT(*) FROM cartcartitem WHERE cart_id = \"$cartId\"";
 
 $result = $conn->query($query)->fetch_assoc();
-echo '<li class="nav-item">
-<button class="btn btn-primary" type="submit">
+echo @!!$_COOKIE['token'] ? '<li class="nav-item">
+<button class="btn btn-primary" id="cartBtn">
 <i class="me-1 fa fa-shopping-basket"></i>
     Cart
     <span class="badge bg-yellow text-white ms-1 rounded-pill">' . $result['COUNT(*)'] . '</span>
 </button>
-</li>';
+</li>' : null;

@@ -13233,3 +13233,9 @@ section#contact form#contactForm :-ms-input-placeholder {
   border-color: transparent transparent #fff transparent;
   transform: translateX(-50%);
 }
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

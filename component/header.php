@@ -25,7 +25,7 @@
               break;
             case "/product.php":
             default:
-              echo   @!!$_COOKIE['token'] ? include "./component/cartButton.php" : null;
+              include "./component/cartButton.php";
               break;
           }
           ?>
