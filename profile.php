@@ -75,55 +75,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       <div class="tab-content">
         <div class="tab-pane active" id="home">
           <hr>
-          <form class="form" action="profile.php" method="post" id="registrationForm">
+          <form class="form-horizontal" action="profile.php" method="post" id="registrationForm">
+
             <div class="form-group">
-              <div class="col-xs-12">
-                <label for="first_name">
-                  <h4>Full Name</h4>
-                </label>
-                <input type="text" class="form-control" name="fullName" id="first_name" placeholder="Full name" value="<?php echo  $data['fullName']  ?>" title="enter your full name">
-              </div>
+              <label for="fullName">Full Name</label>
+              <input type="text" class="form-control" name="fullName" id="fullName" placeholder="Full name" value="<?php echo $data['fullName'] ?>" title="Enter your full name">
             </div>
+
             <div class="form-group">
-              <div class="col-xs-12">
-                <label for="phone">
-                  <h4>Phone</h4>
-                </label>
-                <?php
-                echo '<input type="text" class="form-control" name="phoneNumber" id="phone" placeholder="enter phone" value=' . $data['phoneNumber'] . ' title="enter your phone number if any.">'
-                ?>
-              </div>
+              <label for="email">Email</label>
+              <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" value="<?php echo $data['email'] ?>" title="Enter your email">
             </div>
+
             <div class="form-group">
-              <div class="col-xs-12">
-                <label for="email">
-                  <h4>Email</h4>
-                </label>
-                <?php
-                echo '<input type="email" class="form-control" name="email" id="email" placeholder="enter email" value=' . $data['email'] . ' title="enter your email.">'
-                ?>
-              </div>
+              <label for="phoneNumber">Phone</label>
+              <input type="text" class="form-control" name="phoneNumber" id="phoneNumber" placeholder="Enter phone" value="<?php echo $data['phoneNumber'] ?>" title="Enter your phone number if any.">
             </div>
+
             <div class="form-group">
-              <div class="col-xs-6">
-                <label for="birthday">
-                  <h4>Birthday</h4>
-                </label>
-                <?php
-                echo '<input type="date" pattern="\d{1,2}/\d{1,2}/\d{4}" class="form-control" name="birthday" id="birthday" placeholder="DD/MM/YYYY" title="Select your birthday" value=' . $data['birthday'] . '>'
-                ?>
-              </div>
+              <label for="birthday">Birthday</label>
+              <input type="date" class="form-control" name="birthday" id="birthday" placeholder="DD/MM/YYYY" title="Select your birthday" value="<?php echo $data['birthday'] ?>">
             </div>
+
             <div class="form-group">
-              <div class="col-xs-12">
-                <br>
-                <button class="btn btn-lg btn-primary" type="submit" id="submit"><i class="glyphicon glyphicon-ok-sign"></i> Save</button>
-                <button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>
-              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-            <div id="success-message" style="display: none;">
-              <p class="alert alert-success">Form submitted successfully!</p>
-            </div>
+
           </form>
 
           <hr>

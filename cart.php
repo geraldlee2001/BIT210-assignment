@@ -26,19 +26,24 @@ JOIN
 product p ON ci.productId = p.ID
 WHERE
 cci.cart_id =\"$decoded->cartId\";";
+$cartQuery = "SELECT * FROM cart WHERE id = \"$decoded->cartId\"";
 $data = $conn->query($query);
+$cartResult = $conn->query($cartQuery);
+$cartData = $cartResult->fetch_assoc();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $cartItemId = $_POST['cartItemId']; // Replace with the username to check
-  $quantity = $_POST['new_quantity'];
-  $sql = "UPDATE cartItem
-  SET quantity =  '$quantity'
-  WHERE id = \" $cartItemId\"";
-  echo $sql;
-  if ($conn->query($sql) === TRUE) {
-  } else {
+  $quantity = $_POST['quantity'];
+  $sql = $quantity > 0 ?
+    "UPDATE cartItem SET quantity =  '$quantity' WHERE id = \"$cartItemId\""
+    : "DELETE FROM cartcartitem WHERE cart_item_id = \"$cartItemId\"";
+  $sql2 = "DELETE FROM cartitem WHERE id = \"$cartItemId\"";
+  $result = $conn->query($sql);
+  $data = $conn->query($query);
+  if ($quantity <= 0)
+    $result = $conn->query($sql2);
+  if (!$conn->query($sql))
     echo "Error: " . $sql . "<br>" . $conn->error;
-  }
 }
 ?>
 
@@ -59,13 +64,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 
 <body>
-
   <?php include "./component/header.php" ?>
-
-  <div style="background-color: #eee; " class="mt-6">
+  <div class="container-fluid h-100" style="background-color: #eee;">
     <div class="container py-5">
       <div class="row d-flex justify-content-center align-items-center">
-        <div class="col-10">
+        <div class="col-10 mt-6">
 
           <div class="d-flex justify-content-between align-items-center mb-4">
             <h3 class="fw-normal mb-0 text-black">Shopping Cart</h3>
@@ -74,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
           $totalPrice = 0;
           while ($item = $data->fetch_assoc()) {
             $totalPrice += $item['product_price'] * $item['cart_item_quantity'];
-            echo '<form method="post" action="cart.php"><div class="card rounded-3 mb-4">
+            echo '<form method="post" action="cart.php" class="cart-item-form"><div class="card rounded-3 mb-4">
                   <input type="hidden" name="cartItemId" value="' . $item['cart_item_id'] . '">
                   <div class="card-body p-4">
                     <div class="row d-flex justify-content-between align-items-center">
@@ -85,10 +88,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <p class="lead fw-normal mb-2">' . $item['product_name'] . '</p>
                       </div>
                       <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
-                        <button class="btn btn-link px-2" id="minus">
+                        <button class="btn btn-link px-2" id="minus" onclick="decreaseQuantity(this)">
                           <i class="fas fa-minus"></i>
                         </button>
-                        <input type="hidden" name="new_quantity" id="newQuantity" value="">
+          <input id="quantity" min="0" name="quantity" value=' . $item['cart_item_quantity'] . ' type="number" class="current-quantity form-control form-control-sm " style="text-align: center;" />
                         <button id="plus" class="btn btn-link px-2" onclick="increaseQuantity(this)">
                           <i class="fas fa-plus"></i>
                         </button>
@@ -96,17 +99,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                       <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
                         <h5 class="mb-0">RM ' . $item['product_price'] . '</h5>
                       </div>
-                      <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                      <button id="delete" class="btn btn-link col-md-1 col-lg-1 col-xl-1 text-end" onclick="deleteItem(this)">
                         <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
-                      </div>
+                      </button>
                     </div>
                   </div>
                 </div>
+                <input type="submit" style="display:none;">
                 </form>
       ';
           }
           ?>
-          <input id="quantity" min="0" name="quantity" value='0' type="number" class="form-control form-control-sm" style="text-align: center;" />
 
 
           <div class="card mb-4">
@@ -119,7 +122,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
           <div class="card">
             <div class="card-body">
-              <button type="button" class="btn btn-warning btn-block btn-lg">Proceed to Pay</button>
+              <form action="./php/checkout.php" method="POST">
+                <input type="hidden" name="totalPrice" value="<?php echo $totalPrice ?>">
+                <input type="hidden" name="cartCode" value="<?php echo $cartData['code'] ?>">
+                <button type="submit" class="btn btn-warning btn-block btn-lg">Proceed to Pay</button>
+              </form>
             </div>
           </div>
 

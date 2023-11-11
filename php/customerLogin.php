@@ -19,6 +19,7 @@ $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 $query = "SELECT * FROM user WHERE userName = \"$username\"";
 $result = $conn->query($query);
 $user = $result->fetch_assoc();
+$code = bin2hex(random_bytes(15));
 
 if ($user && password_verify($password, $user['password'])) {
   if ($user['type'] === 'CUSTOMER') {
@@ -32,7 +33,7 @@ if ($user && password_verify($password, $user['password'])) {
     $cartResult = $conn->query($cartQuery);
     $cart = $cartResult->fetch_assoc();
     if ($cart == null) {
-      $cartQuery = "INSERT INTO cart (id, customerId, status) VALUES ('$id', '$customer[id]', 'ADDING')";
+      $cartQuery = "INSERT INTO cart (id, customerId, status,code) VALUES ('$id', '$customer[id]', 'ADDING','$code')";
       $newCartResult = $conn->query($cartQuery);
     }
     // Payload data

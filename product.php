@@ -14,9 +14,6 @@ LEFT JOIN review r ON p.id = r.productId
 WHERE p.amount > 0
 GROUP BY p.id, p.name, p.productCode, p.amount, p.price, p.imageUrl;";
 $data = $conn->query($query);
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -55,7 +52,7 @@ $data = $conn->query($query);
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 <?php
                 while ($item = $data->fetch_assoc()) {
-                    echo ' <div class="col mb-5">
+                    echo '<form method="POST" action="./php/addToCart.php"> <div class="col mb-5 ">
                                 <a href="/product_detail.php?id=' . $item['product_code'] . '">
                                     <div class="card h-100">
                                         <!-- Product image-->
@@ -79,12 +76,15 @@ $data = $conn->query($query);
                     echo '</div>
                                         </div>
                                         <!-- Product actions-->
-                                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-block align-self-center w-50 mb-2">
+                                        <i class="me-1 fa fa-shopping-basket"></i> Add to cart
+                                      </button>
                                     </div>
                                     </a>
-                                </div>';
+                                </div> 
+                      <input type="hidden" class="num w-50" id="num" value="1" name="quantity">
+                 <input type="hidden" class="form-control" name="productId" value="' . $item['product_id'] . '">
+                </form>';
                 }
                 ?>
 
