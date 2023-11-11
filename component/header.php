@@ -1,5 +1,6 @@
  <!-- Navigation-->
-
+ <?php require_once './vendor/autoload.php';
+  ?>
  <nav class="navbar navbar-expand-lg navbar-dark fixed-top " id="mainNav">
    <div class="container">
      <a class="navbar-brand" href="../"><img src="assets/img/navbar-logo.svg" alt="..." /></a>
@@ -30,7 +31,7 @@
           }
           ?>
 
-         <li class="nav-item">
+         <!-- <li class="nav-item">
            <div class="flex">
              <?php require_once './vendor/autoload.php';
               @!!include './component/profileButton.php';
@@ -43,6 +44,26 @@
                </div>
              </div>
            </div>
+         </li> -->
+
+         <li class="nav-item">
+           <ul class="navbar-nav ">
+             <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown">
+                 <?php
+                  @!!include './component/profileButton.php';
+                  ?>
+               </a>
+               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                 <li> <button class="btn" id="profile-button">Profile</button></li>
+                 <li> <button class="btn" id="settings-button">Settings</button></li>
+                 <li>
+                   <hr class="dropdown-divider" />
+                 </li>
+                 <li> <button class="btn" id="logout-button">Logout</button></li>
+               </ul>
+             </li>
+           </ul>
          </li>
        </ul>
 

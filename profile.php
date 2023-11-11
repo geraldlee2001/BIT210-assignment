@@ -47,7 +47,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </head>
 
 <link href="css/styles.css" rel="stylesheet" />
-<link href="css/product-detail.css" rel="stylesheet" />
 
 <hr>
 <?php include "./component/header.php" ?>
