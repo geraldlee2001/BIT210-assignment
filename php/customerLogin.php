@@ -13,14 +13,15 @@ $key = 'bit210';
 $username = $_POST['username'];
 $password = $_POST['password'];
 $id = Uuid::uuid4();
-// Securely hash the user's password and store it in the database
-$hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 // Query the database to retrieve the user's information
 $query = "SELECT * FROM user WHERE userName = \"$username\"";
 $result = $conn->query($query);
 $user = $result->fetch_assoc();
 $code = bin2hex(random_bytes(15));
-
+$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+echo $hashedPassword;
+echo '<br>';
+echo $password . '<br>' . $user['password'];
 if ($user && password_verify($password, $user['password'])) {
   if ($user['type'] === 'CUSTOMER') {
     setcookie('user', $username); // Cookie expires in 1 hour
@@ -28,6 +29,10 @@ if ($user && password_verify($password, $user['password'])) {
     $customerQuery = "SELECT * FROM customer WHERE userId = \"$user[id]\"";
     $customerResult = $conn->query($customerQuery);
     $customer = $customerResult->fetch_assoc();
+    if (!$customer) {
+      header('Location: /profile_create.php'); // Redirect to a profile create page
+      return;
+    }
     // Check if the user has a cart
     $cartQuery = "SELECT * FROM cart WHERE customerId = \"$customer[id]\" AND status =\"ADDING\"";
     $cartResult = $conn->query($cartQuery);

@@ -1,20 +1,12 @@
 <?php
-// $username =  $_COOKIE['user'] ? $_COOKIE['user'] : "admin";
+include "../php/tokenDecoding.php";
+$username =  $decoded->username;
 echo ' <div id="layoutSidenav_nav">
       <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
           <div class="nav">
-            <div class="sb-sidenav-menu-heading">Core</div>
-            <a class="nav-link" href="./">
-              <div class="sb-nav-link-icon">
-                <i class="fas fa-tachometer-alt"></i>
-              </div>
-              Dashboard
-            </a>
-          </div>
-          <div class="nav">
             <div class="sb-sidenav-menu-heading">Management</div>
-            <a class="nav-link" href="./customers.php">
+            <a class="nav-link" href="./index.php">
               <div class="sb-nav-link-icon">
                 <i class="fas fa-tachometer-alt"></i>
               </div>
@@ -36,6 +28,7 @@ echo ' <div id="layoutSidenav_nav">
         </div>
         <div class="sb-sidenav-footer">
           <div class="small">Logged in as:</div>
+          ' . $username . '
         </div>
       </nav>
     </div>'; ?>

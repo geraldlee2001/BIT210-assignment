@@ -1,119 +1,118 @@
 <?php
+
+require_once('../vendor/autoload.php');
 require_once('../vendor/tecnickcom/tcpdf/tcpdf.php');
 
+include "../php/databaseConnection.php";
+include "../php/tokenDecoding.php";
 
-// Replace these variables with your actual data
-$customerName = "John Doe";
-$date = date("Y-m-d");
-$invoiceNumber = "12345";
-$totalAmount = 100.00;
+$sql = "SELECT
+cci.cart_item_id,
+cci.cart_id,
+ci.createdAt AS cart_item_createdAt,
+ci.updatedAt AS cart_item_updatedAt,
+ci.quantity AS cart_item_quantity,
+ci.productId,
+p.ID AS product_id,
+p.createdAt AS product_createdAt,
+p.updatedAt AS product_updatedAt,
+p.name AS product_name,
+p.productCode,
+p.description AS product_description,
+p.price AS product_price,
+p.amount AS product_amount,
+p.imageUrl AS product_imageUrl,
+p.merchantID
+FROM
+cartcartitem cci
+JOIN
+cartitem ci ON cci.cart_item_id = ci.id
+JOIN
+product p ON ci.productId = p.ID
+WHERE
+cci.cart_id =\"$_GET[id]\"";
 
-// Create a new PDF document
-$pdf = new TCPDF();
-$pdf->SetAutoPageBreak(TRUE, 15);
+$cartQuery = "SELECT * FROM cart WHERE id = \"$_GET[id]\"";
+$data = $conn->query($sql);
+$cartResult = $conn->query($cartQuery);
+$cartData = $cartResult->fetch_assoc();
 
-// Add a page
-$pdf->AddPage();
-
-// Set the font
-$pdf->SetFont('helvetica', '', 12);
-
-// Output the receipt content
-$html = '<h1>Receipt</h1>';
-$html .= "<p><strong>Customer Name:</strong> $customerName</p>";
-$html .= "<p><strong>Date:</strong> $date</p>";
-$html .= "<p><strong>Invoice Number:</strong> $invoiceNumber</p>";
-
-$html .= '<table border="1">
-        <tr>
-            <th>Item</th>
-            <th>Quantity</th>
-            <th>Unit Price</th>
-            <th>Total</th>
-        </tr>
-        <tr>
-            <td>Item 1</td>
-            <td>2</td>
-            <td>$50.00</td>
-            <td>$100.00</td>
-        </tr>
-    </table>';
-
-$html .= "<p><strong>Total Amount:</strong> $" . number_format($totalAmount, 2) . "</p>";
-
-$pdf->writeHTML($html, true, false, true, false, '');
-
-// Set the file name and disposition (attachment to force download)
-$filename = "receipt.pdf";
-$pdf->Output($filename, 'D');
-
-// Clean the output buffer to prevent any additional output
-ob_end_clean();
-?>
+$customerQuery = "SELECT * FROM customer WHERE id = \"$decoded->customerId\"";
+$customerResult = $conn->query($customerQuery);
+$customerData = $customerResult->fetch_assoc();
 
 
-class PDF extends TCPDF {
-function Header() {
-// Add an image or any other header content if needed
+use TCPDF as TCPDF;
+
+class ReceiptPDF extends TCPDF
+{
+    // Add any customization methods or properties here if needed
+
+    public function generateReceipt($customerName, $items, $totalAmount, $cartData)
+    {
+        $this->AddPage();
+
+        // Customize your receipt layout here
+
+        $this->SetFont('times', 'B', 16);
+        $this->Cell(0, 10, 'Receipt', 0, 1, 'C');
+
+        $this->SetFont('times', '', 12);
+        $this->Cell(0, 10, 'Customer Name: ' . $customerName, 0, 1);
+
+        $this->Cell(0, 10, '', 0, 1); // Add spacing
+
+        // Add a table for items
+        $this->SetFillColor(200, 220, 255);
+        $this->SetFont('times', 'B', 12);
+        $this->Cell(100, 10, 'Item', 1, 0, 'C', 1);
+        $this->Cell(30, 10, 'Quantity', 1, 0, 'C', 1);
+        $this->Cell(40, 10, 'Total', 1, 1, 'C', 1);
+
+        $this->SetFont('times', '', 12);
+        foreach ($items as $item) {
+            // Customize the appearance of each row
+            $this->Cell(100, 10, $item['Product Name'], 1);
+            $this->Cell(30, 10, $item['Quantity'], 1);
+            $this->Cell(40, 10, $item['Total'], 1, 1, 'R'); // Align to the right
+        }
+
+        $this->Cell(0, 10, '', 0, 1); // Add spacing
+
+        // Add total amount
+        $this->SetFont('times', 'B', 12);
+        $this->Cell(170, 10, 'Total Amount: RM ' . number_format($totalAmount, 2), 1, 1, 'R');
+
+        // Output PDF to browser or save to a file
+        $this->Output('receipt-' . $cartData['code'] . '.pdf', 'D');
+
+        echo '<script>
+        setTimeout(function() {
+            window.close();
+        }, 2000); // Close the tab after 2000 milliseconds (2 seconds)
+    </script>';
+    }
 }
-
-function Footer() {
-// Add a footer if needed
-}
-}
-
-// Create a new PDF instance
-$pdf = new PDF();
-$pdf->AddPage();
-
-// Replace these variables with your actual data
-$customerName = "John Doe";
-$date = date("Y-m-d");
-$invoiceNumber = "12345";
-
-// Define an array of items (item name, description, and quantity)
-$items = [
-["Item 1", "Description 1", 2],
-["Item 2", "Description 2", 3],
-["Item 3", "Description 3", 1],
-];
-
-// Initialize total amount
+$items = array();
 $totalAmount = 0;
 
-$pdf->SetFont('Arial', 'B', 16);
-$pdf->Cell(0, 10, 'Receipt', 0, 1, 'C');
-$pdf->SetFont('Arial', '', 12);
-$pdf->Cell(0, 10, 'Customer Name: ' . $customerName, 0, 1);
-$pdf->Cell(0, 10, 'Date: ' . $date, 0, 1);
-$pdf->Cell(0, 10, 'Invoice Number: ' . $invoiceNumber, 0, 1);
-$pdf->Cell(0, 10, '', 0, 1);
+// Example usage:\
+if ($data->num_rows > 0) {
+    while ($row = $data->fetch_assoc()) {
+        $item = [
+            'Product Name' => $row['product_name'],
+            'Quantity' => $row['cart_item_quantity'],
+            'Total' => $row['cart_item_quantity'] * $row['product_price']
+        ];
 
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(40, 10, 'Item', 1);
-$pdf->Cell(60, 10, 'Description', 1);
-$pdf->Cell(30, 10, 'Quantity', 1);
-$pdf->Cell(40, 10, 'Total', 1);
-$pdf->SetFont('Arial', '', 12);
+        // Add the item to the $items array
+        $items[] = $item;
 
-foreach ($items as $item) {
-$itemName = $item[0];
-$itemDescription = $item[1];
-$itemQuantity = $item[2];
-$itemTotal = $itemQuantity * 50.00; // Replace 50.00 with the actual item price
-
-// Update the total amount
-$totalAmount += $itemTotal;
-
-$pdf->Cell(40, 10, $itemName, 1);
-$pdf->Cell(60, 10, $itemDescription, 1);
-$pdf->Cell(30, 10, $itemQuantity, 1);
-$pdf->Cell(40, 10, '$' . number_format($itemTotal, 2), 1);
+        // Update the total amount
+        $totalAmount += $item['Total'];
+    }
 }
+$pdf = new ReceiptPDF();
+$customerName = $customerData['fullName'];
 
-$pdf->Cell(0, 10, '', 0, 1);
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(170, 10, 'Total Amount: $' . number_format($totalAmount, 2), 1);
-
-// Generate the PDF file and send it for download
-$pdf->Output('receipt.pdf', 'D');
+$pdf->generateReceipt($customerName, $items, $totalAmount, $cartData);

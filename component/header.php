@@ -12,6 +12,11 @@
        <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
          <?php
           switch ($_SERVER['REQUEST_URI']) {
+            case "/login.php":
+            case "/signup.php":
+            case "/profile_create.php":
+              echo "<div/>";
+              break;
             case "/index.php":
             case "/":
               echo ' <li class="nav-item">
@@ -31,7 +36,7 @@
           }
           ?>
 
-         <!-- <li class="nav-item">
+         <li class="nav-item">
            <div class="flex">
              <?php require_once './vendor/autoload.php';
               @!!include './component/profileButton.php';
@@ -44,9 +49,9 @@
                </div>
              </div>
            </div>
-         </li> -->
+         </li>
 
-         <li class="nav-item">
+         <!-- <li class="nav-item">
            <ul class="navbar-nav ">
              <li class="nav-item dropdown">
                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown">
@@ -64,7 +69,7 @@
                </ul>
              </li>
            </ul>
-         </li>
+         </li> -->
        </ul>
 
      </div>

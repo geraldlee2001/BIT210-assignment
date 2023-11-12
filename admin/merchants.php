@@ -33,16 +33,16 @@ $data = $conn->query($query);
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Tables</h1>
+                    <h1 class="mt-4">Merchant List</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Tables</li>
+                        <li class="breadcrumb-item active">Merchant List</li>
                     </ol>
 
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            User List
+                            Merchant List
                         </div>
                         <div class="card-body">
                             <table id="datatablesSimple">
