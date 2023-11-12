@@ -1,21 +1,12 @@
 <?php
 include "./php/databaseConnection.php";
 require_once './vendor/autoload.php';
+include "./php/tokenDecoding.php";
 
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
+use Ramsey\Uuid\Uuid;
 
-// Your secret key (must match the one used for encoding)
-$key = 'bit210';
+$id = Uuid::uuid4();
 
-// The JWT you want to decode\
-if ($_COOKIE['token']) {
-  $jwt = $_COOKIE['token']; // Replace with the actual JWT you want to decode
-  $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
-  $query = "SELECT * FROM customer where id = \"$decoded->customerId\"";
-  $result = $conn->query($query);
-  $data = $result->fetch_assoc();
-}
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   // Check if the username exists
@@ -24,9 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $phoneNumber = $_POST['phoneNumber'];
   $birthday = $_POST['birthday'];
 
-  $sql = "UPDATE customer
-  SET fullName =  '$fullName', email = '$email', phoneNumber = '$phoneNumber', birthday='$birthday'
-  WHERE id = \"$decoded->customerId\"";
+  $sql = "INSERT INTO customer (id,fullName, email, phoneNumber, birthday,userId) VALUES ('$id','$fullName', '$email', '$phoneNumber', '$birthday','$decoded->userId')";
   echo $sql;
   if ($conn->query($sql) === TRUE) {
     echo  "<script>alert('Registration Successful');</script>";
@@ -53,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <div class="container bootstrap snippet mt-6">
   <div class="row">
     <div class="col-sm-10 mt-2">
-      <?php echo '<h1 >' . strtoupper($decoded->username) . '</h1>' ?>
+      <h1>Create Profle </h1>
     </div>
   </div>
   <div class="row mt-3">
@@ -78,22 +67,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <div class="form-group">
               <label for="fullName">Full Name</label>
-              <input type="text" class="form-control" name="fullName" id="fullName" placeholder="Full name" value="<?php echo $data['fullName'] ?>" title="Enter your full name">
+              <input type="text" class="form-control" name="fullName" id="fullName" placeholder="Full name" title="Enter your full name">
             </div>
 
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" value="<?php echo $data['email'] ?>" title="Enter your email">
+              <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" title="Enter your email">
             </div>
 
             <div class="form-group">
               <label for="phoneNumber">Phone</label>
-              <input type="text" class="form-control" name="phoneNumber" id="phoneNumber" placeholder="Enter phone" value="<?php echo $data['phoneNumber'] ?>" title="Enter your phone number if any.">
+              <input type="text" class="form-control" name="phoneNumber" id="phoneNumber" placeholder="Enter phone" title="Enter your phone number if any.">
             </div>
 
             <div class="form-group">
               <label for="birthday">Birthday</label>
-              <input type="date" class="form-control" name="birthday" id="birthday" placeholder="DD/MM/YYYY" title="Select your birthday" value="<?php echo $data['birthday'] ?>">
+              <input type="date" class="form-control" name="birthday" id="birthday" placeholder="DD/MM/YYYY" title="Select your birthday">
             </div>
 
             <div class="form-group">

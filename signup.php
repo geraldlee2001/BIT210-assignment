@@ -1,11 +1,14 @@
 <?php
 
 use Ramsey\Uuid\Uuid;
+use Firebase\JWT\JWT;
 
 require_once './vendor/autoload.php';
 include './php/databaseConnection.php';
 $id = Uuid::uuid4();
 
+// Your secret key
+$key = 'bit210';
 
 // Function to check if a username exists
 function isUsernameExists($username, $conn)
@@ -17,44 +20,42 @@ function isUsernameExists($username, $conn)
   return $result->num_rows > 0;
 }
 
-// Function to check if an email exists
-function isEmailExists($email, $conn)
-{
-  $email = $conn->real_escape_string($email);
-  $sql = "SELECT id FROM user WHERE email = '$email'";
-  $result = $conn->query($sql);
-
-  return $result->num_rows > 0;
-}
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   // Check if the username exists
   $checkUsername = $_POST['username']; // Replace with the username to check
-  $email = $_POST['email']; // Replace with the username to check
   $usernameExists = isUsernameExists($checkUsername, $conn);
-  $emailExists = isEmailExists($email, $conn);
 
   if ($usernameExists) {
     echo "<script>alert('Username already exists. Please choose a different username.');</script>";
-  } elseif ($emailExists) {
-    echo "<script>alert('Email already exists. Please use a different email.');</script>";
   } else {
     // Username is available, proceed with registration
     $newUsername = $checkUsername; // Replace with the user's chosen username
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
     // Insert the user into the database
-    $sql = "INSERT INTO user (id, userName, email,password) VALUES ('$id','$newUsername', '$email','$hashedPassword')";
-
+    $sql = "INSERT INTO user (id, userName,password) VALUES ('$id','$newUsername','$hashedPassword')";
 
     if ($conn->query($sql) === TRUE) {
       echo  "<script>alert('Registration Successful');</script>";
-      header('Location: ../'); // Redirect to a welcome page
+      // Payload data
+      $payload = array(
+        "userId" => $user['id'],
+        "username" =>  $user["userName"],
+        "role" => $user['type'],
+        'customerId' => null,
+      );
+
+      // Generate the JWT
+      $token = JWT::encode($payload, $key, 'HS256');
+      setcookie("token",  $token, time() + 3600 * 60, "/", "localhost");
+      header('Location: ../profile_create.php'); // Redirect to a profile create page
     } else {
       echo "Error: " . $sql . "<br>" . $conn->error;
     }
   }
 }
+
+
 
 // Close the database connection
 $conn->close();
@@ -100,10 +101,6 @@ $conn->close();
               <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required />
-              </div>
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required />
               </div>
               <div class="form-group">
                 <label for="password">Password</label>

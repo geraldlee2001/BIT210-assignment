@@ -1,3 +1,53 @@
+<!-- process_login.php -->
+<?php
+require_once '../vendor/autoload.php';
+
+use Firebase\JWT\JWT;
+
+$key = 'bit210';
+
+include '../php/databaseConnection.php';
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    // Check if the username and password match (replace with your authentication logic)
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Securely hash the user's password and store it in the database
+    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    // Query the database to retrieve the user's information
+    $query = "SELECT * FROM user WHERE userName = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    if ($user && password_verify($password, $user['password'])) {
+        echo $user['type'];
+        if ($user['type'] === 'ADMIN') {
+            // Payload data
+            $payload = array(
+                "userId" => $user['id'],
+                "username" =>  $user["userName"],
+                "role" => $user['type'],
+            );
+            // Generate the JWT
+            $token = JWT::encode($payload, $key, 'HS256');
+            setcookie("token",  $token, time() + 3600 * 60, "/", "localhost");
+            header('Location: /admin/index.php'); // Redirect to a welcome page
+
+
+        } else {
+            // User is not an admin
+            echo "You are not an admin.";
+        }
+    } else {
+        // Invalid login credentials
+        echo "Invalid username or password.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,20 +74,17 @@
                                     <h3 class="text-center font-weight-light my-4">Login</h3>
                                 </div>
                                 <div class="card-body">
-                                    <form action="/php/adminLogin.php" method="POST">
+                                    <form action="login.php" method="POST">
                                         <div class="form-floating mb-3">
-                                            <input class="form-control" id="username"  name='username'
-                                                placeholder="name@example.com" />
+                                            <input class="form-control" id="username" name='username' placeholder="name@example.com" />
                                             <label for="inputEmail">Email address</label>
                                         </div>
                                         <div class="form-floating mb-3">
-                                            <input class="form-control" id="password" type="password" name='password'
-                                                placeholder="Password" />
+                                            <input class="form-control" id="password" type="password" name='password' placeholder="Password" />
                                             <label for="inputPassword">Password</label>
                                         </div>
                                         <div class="form-check mb-3">
-                                            <input class="form-check-input" id="inputRememberPassword" type="checkbox"
-                                                value="" />
+                                            <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
                                             <label class="form-check-label" for="inputRememberPassword">Remember
                                                 Password</label>
                                         </div>
@@ -71,8 +118,7 @@
             </footer>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
 </body>
 

@@ -1,5 +1,6 @@
  <!-- Navigation-->
-
+ <?php require_once './vendor/autoload.php';
+  ?>
  <nav class="navbar navbar-expand-lg navbar-dark fixed-top " id="mainNav">
    <div class="container">
      <a class="navbar-brand" href="../"><img src="assets/img/navbar-logo.svg" alt="..." /></a>
@@ -11,6 +12,11 @@
        <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
          <?php
           switch ($_SERVER['REQUEST_URI']) {
+            case "/login.php":
+            case "/signup.php":
+            case "/profile_create.php":
+              echo "<div/>";
+              break;
             case "/index.php":
             case "/":
               echo ' <li class="nav-item">
@@ -44,6 +50,26 @@
              </div>
            </div>
          </li>
+
+         <!-- <li class="nav-item">
+           <ul class="navbar-nav ">
+             <li class="nav-item dropdown">
+               <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown">
+                 <?php
+                  @!!include './component/profileButton.php';
+                  ?>
+               </a>
+               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                 <li> <button class="btn" id="profile-button">Profile</button></li>
+                 <li> <button class="btn" id="settings-button">Settings</button></li>
+                 <li>
+                   <hr class="dropdown-divider" />
+                 </li>
+                 <li> <button class="btn" id="logout-button">Logout</button></li>
+               </ul>
+             </li>
+           </ul>
+         </li> -->
        </ul>
 
      </div>

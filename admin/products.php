@@ -1,25 +1,8 @@
 <?php
-include '../php/tokenDecoding.php';
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "malayantour";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+include "../php/databaseConnection.php";
 // Retrieve data from customer table
-$query = "SELECT id,fullName, phoneNumber, birthday FROM customer";
+$query = "SELECT *FROM product";
 $data = $conn->query($query);
-
-
-// Check if the 'user' cookie exists
-if (!$decoded->userId && $decoded->role !== 'ADMIN') {
-    header('Location: ../admin/login.php'); // Redirect to the login page if the cookie is not present
-    exit;
-}
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +13,7 @@ if (!$decoded->userId && $decoded->role !== 'ADMIN') {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Customer List</title>
+    <title>Product List</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -43,24 +26,26 @@ if (!$decoded->userId && $decoded->role !== 'ADMIN') {
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Customer List</h1>
+                    <h1 class="mt-4">Product List</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Customer List</li>
+                        <li class="breadcrumb-item active">Product List</li>
                     </ol>
 
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Customer List
+                            Product List
                         </div>
                         <div class="card-body">
                             <table id="datatablesSimple">
                                 <thead>
                                     <tr>
-                                        <th>Full Name</th>
-                                        <th>Birthday</th>
-                                        <th>Contact Number</th>
+                                        <th>Name</th>
+                                        <th>Product code</th>
+                                        <th>Description</th>
+                                        <th>Price</th>
+                                        <th>Amount</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -68,10 +53,12 @@ if (!$decoded->userId && $decoded->role !== 'ADMIN') {
                                 <?php
                                 while ($item = $data->fetch_assoc()) {
                                     echo "<tr>";
-                                    echo "<td>" . $item["fullName"] . "</td>";
-                                    echo "<td>" . date_format(date_create($item["birthday"]), 'd/m/Y')  . "</td>";
-                                    echo "<td>" . $item["phoneNumber"] . "</td>";
-                                    echo "<td><a href='edit.php?id=" . $item["id"] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
+                                    echo "<td>" . $item["name"] . "</td>";
+                                    echo "<td>" . $item['productCode']  . "</td>";
+                                    echo "<td>" . $item['description']  . "</td>";
+                                    echo "<td> RM " . $item['price']  . "</td>";
+                                    echo "<td>" . $item["amount"] . "</td>";
+                                    echo "<td><a href='/admin/product_detail.php?id=" . $item["ID"] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
                                     echo "</tr>";
                                 }
                                 ?>
