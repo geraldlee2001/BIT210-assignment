@@ -1,48 +1,77 @@
 /** @format */
-// @ts-nocheck
 
-const onRating = (e, form) => {
-  const form = button.closest(".rating-item-form");
-  const currentRatingSpan = form.querySelector(".rating");
-  const currentRating = parseInt(e);
-  currentRatingSpan.value = currentRating;
-  // Enable the submit button and trigger the form submission
-  form.querySelector('input[type="submit"]').click();
+// @ts-nocheck
+/** @format */
+
+const onOpenModal = (cartItemId, productId) => {
+  const modal = document.getElementById("reviewModal");
+  const overlay = document.getElementById("overlay");
+  if (modal == null) return;
+  document.getElementById("productId").value = productId;
+  document.getElementById("cartItemId").value = cartItemId;
+  openModal(overlay, modal);
+  overlay?.addEventListener("click", () => {
+    closeModal(overlay, modal);
+  });
 };
 
-const openModalButtons = document.querySelectorAll("[data-modal-target]");
-const closeModalButtons = document.querySelectorAll("[data-close-button]");
-const overlay = document.getElementById("overlay");
-
-openModalButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const modal = document.querySelector(button.dataset.modalTarget);
-    openModal(modal);
-  });
-});
-
-overlay.addEventListener("click", () => {
-  const modals = document.querySelectorAll(".modal.active");
-  modals.forEach((modal) => {
-    closeModal(modal);
-  });
-});
-
-closeModalButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const modal = button.closest(".modal");
-    closeModal(modal);
-  });
-});
-
-function openModal(modal) {
+const onCloseModal = () => {
+  const modal = document.getElementById("reviewModal");
+  const overlay = document.getElementById("overlay");
   if (modal == null) return;
+  closeModal(overlay, modal);
+};
+
+function openModal(overlay, modal) {
   modal.classList.add("active");
-  overlay.classList.add("active");
+  modal.style.display = "block";
+  overlay?.classList.add("active");
 }
 
-function closeModal(modal) {
-  if (modal == null) return;
+function closeModal(overlay, modal) {
+  modal.style.display = "none";
   modal.classList.remove("active");
-  overlay.classList.remove("active");
+  overlay?.classList.remove("active");
 }
+
+jQuery(document).ready(function ($) {
+  $(".rating .star")
+    .hover(function () {
+      $(this).addClass("to_rate");
+      $(this)
+        .parent()
+        .find(".star:lt(" + $(this).index() + ")")
+        .addClass("to_rate");
+      $(this)
+        .parent()
+        .find(".star:gt(" + $(this).index() + ")")
+        .addClass("no_to_rate");
+    })
+    .mouseout(function () {
+      $(this).parent().find(".star").removeClass("to_rate");
+      $(this)
+        .parent()
+        .find(".star:gt(" + $(this).index() + ")")
+        .removeClass("no_to_rate");
+    })
+    .click(function () {
+      $(this).removeClass("to_rate").addClass("rated");
+      $(this)
+        .parent()
+        .find(".star:lt(" + $(this).index() + ")")
+        .removeClass("to_rate")
+        .addClass("rated");
+      $(this)
+        .parent()
+        .find(".star:gt(" + $(this).index() + ")")
+        .removeClass("no_to_rate")
+        .removeClass("rated");
+
+      // Get the rating
+      var rating = $(this).parent().find(".star.rated").length;
+      const ratingInput = document.getElementById("rating");
+      // @ts-ignore
+      ratingInput.value = rating;
+      // TODO: Save your rate here
+    });
+});

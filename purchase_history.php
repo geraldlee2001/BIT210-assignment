@@ -1,7 +1,11 @@
 <?php
 include "./php/tokenDecoding.php";
 include "./php/databaseConnection.php";
+require_once("./vendor/autoload.php");
 
+use Ramsey\Uuid\Uuid;
+
+$id = Uuid::uuid4();
 // Fetch order data from the database
 $sql = "SELECT
 cart.id AS cartId,
@@ -13,7 +17,7 @@ product.price AS productPrice,
 product.imageUrl AS productImageUrl,
 cartitem.createdAt AS purchaseDate,
 cartitem.quantity AS quantity,
-cartItem.id AS cartItemId
+cartitem.id AS cartItemId
 FROM
 cart
 JOIN
@@ -28,26 +32,34 @@ ORDER BY
     purchaseDate DESC";
 
 $result = $conn->query($sql);
-
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+  $cartItemId = $_POST['cartItemId'];
+  $productId = $_POST['productId'];
+  $description = $_POST['description'];
+  $rating = $_POST['rating'];
+  $sql = "INSERT INTO review (id,description,cartItemId,productId, customerId, rating) 
+  VALUES ('$id','$description','$cartItemId','$productId', '$decoded->customerId', '$rating')";
+  $result = $conn->query($sql);
+  if (!$conn->query($sql))
+    echo "Error: " . $sql . "<br>" . $conn->error;
+}
 // Organize order data
 $orders = array();
 if ($result->num_rows > 0) {
   while ($row = $result->fetch_assoc()) {
     $orderCode = $row['cartCode'];
+    $cartItemId = $row['cartItemId'];
     $productId = $row['productId'];
-    $reviewSql = "SELECT * FROM review WHERE productId = '$productId' AND customerId = '$decoded->customerId'";
+    $reviewSql = "SELECT * FROM review WHERE cartItemId = '$cartItemId' AND customerId = '$decoded->customerId'";
     $reviewResult = $conn->query($reviewSql);
     $review = $reviewResult->fetch_assoc();
-
+    $isReviewed = $review;
     // Fetch product details for each order item
-    $productId = $row['productId'];
     $productName = $row['productName'];
     $productPrice = $row['productPrice'];
     $productImage = $row['productImageUrl'];
     $productQuantity = $row['quantity'];
     $purchasedAt = $row['purchaseDate'];
-    $cartItemId = $row['cartItemId'];
-    $isReviewed = !!$review;
 
     // Add order item to the orders array
     if (!isset($orders[$orderCode])) {
@@ -61,20 +73,13 @@ if ($result->num_rows > 0) {
       'productImage' => $productImage,
       'quantity' => $productQuantity,
       'cartItemId' => $cartItemId,
+      'isReviewed' => isset($isReviewed),
       'purchasedAt' => $purchasedAt,
     );
   }
 }
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  $cartItemId = $_POST['cartItemId'];
-  $productId = $_POST['productId'];
-  $rating = $_POST['rating'];
-  $sql = "INSERT INTO review (productId, customerId, rating) VALUES ('$productId', '$decoded->customerId', '$rating')";
-  $result = $conn->query($sql);
-  if (!$conn->query($sql))
-    echo "Error: " . $sql . "<br>" . $conn->error;
-}
+
 ?>
 
 
@@ -82,6 +87,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html>
 
 <head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
@@ -116,7 +123,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <p>Purhcased at: <?php echo $orderItems[0]['purchasedAt'] ?></p>
               </div>
               <?php foreach ($orderItems as $orderItem) : ?>
-
                 <div class="history-item-details">
                   <div style="display:flex; flex-direction: row;">
                     <img src=<?php echo $orderItem['productImage'] ?> alt="Product Image" class="product-image">
@@ -128,15 +134,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                   </div>
                   <h2 class="total">Total: RM <?php echo  $orderItem['quantity'] * $orderItem['productPrice'] ?></h2>
                 </div>
-                <?php if (!$isReviewed) : ?>
-                  <div class="row align-self-end mb-3">
-                    <div class="well well-sm">
-                      <div class="text-right">
-                        <button data-modal-target="#modal" class="btn btn-primary" id="open-review-box">Leave a Review</a>
-                      </div>
-                    </div>
-                  </div>
-                  <div id="overlay"></div>
+                <?php if (!$orderItem['isReviewed']) : ?>
+                  <button data-modal-target="#modal" class="btn btn-primary align-self-end" onclick="onOpenModal('<?php echo  $orderItem['cartItemId']; ?>','<?php echo $orderItem['productId']; ?>')">Rate this item</button>
+                <?php else : ?>
+                  <div class='mb-4'></div>
                 <?php endif; ?>
               <?php endforeach; ?>
             </div>
@@ -144,26 +145,38 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
       </div>
     </div>
-  </div>
-  <div class="modal" id="modal">
-    <div class="modal-header">
-      <div class="title">Customer review</div>
-      <button data-close-button class="close-button">&times;</button>
-    </div>
-    <div class="modal-body">
-      <div class="col-md-12">
-        <form accept-charset="UTF-8" action="" method="post">
-          <input id="ratings-hidden" name="rating" type="hidden" />
-          <textarea class="form-control animated" cols="50" id="new-review" name="comment" placeholder="Enter your review here..." rows="5"></textarea>
-          <div class="text-right">
-            <div class="stars starrr" data-rating="0"></div>
-            <a class="btn btn-danger btn-sm" href="#" id="close-review-box" style="display: none; margin-right: 10px">
-              <span class="glyphicon glyphicon-remove"></span>Cancel</a>
-            <button class="btn btn-success btn-lg" type="submit">Save</button>
-          </div>
-        </form>
+    <div class="ratingModal p-3" id="reviewModal">
+      <div class="ratingModal-header d-flex flex-row justify-content-between ">
+        <div class="title">Customer review</div>
+        <button data-close-button class="btn btn-light" onclick='onCloseModal()'>&times;</button>
+      </div>
+      <div class="ratingModal-body">
+        <div class="col-md-12">
+          <form accept-charset="UTF-8" action="purchase_history.php" method="post">
+            <input id="rating" name="rating" type="hidden" value="0" />
+            <textarea class="form-control animated" cols="50" id="new-review" name="description" placeholder="Enter your review here..." rows="5"></textarea>
+            <div class="text-right d-flex flex-row justify-content-between ">
+              <div class="rating left">
+                <div class="stars right">
+                  <a class="star"></a>
+                  <a class="star"></a>
+                  <a class="star"></a>
+                  <a class="star"></a>
+                  <a class="star"></a>
+                </div>
+              </div>
+              <input type="hidden" name="productId" id="productId" />
+              <input type="hidden" name="cartItemId" id="cartItemId" />
+              <button class="btn btn-primary my-auto" type="submit">Save</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
+
+  </div>
+
+  <div id="overlay">
   </div>
   <?php include "./component/footer.php"; ?>
 </body>
