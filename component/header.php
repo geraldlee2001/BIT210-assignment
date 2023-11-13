@@ -44,7 +44,7 @@
              <div class="modal" id="myModal">
                <div class="modal-content">
                  <button class="btn" id="profile-button">Profile</button>
-                 <button class="btn" id="settings-button">Settings</button>
+                 <button class="btn" id="history-button">Purchased</button>
                  <button class="btn" id="logout-button">Logout</button>
                </div>
              </div>

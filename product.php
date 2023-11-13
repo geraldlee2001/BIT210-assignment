@@ -52,6 +52,7 @@ $data = $conn->query($query);
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 <?php
                 while ($item = $data->fetch_assoc()) {
+                    $resultTernary = ($item['product_rating']) ? $$item['product_rating'] : '--';
                     echo '<form method="POST" action="./php/addToCart.php"> <div class="col mb-5 ">
                                 <a href="/product_detail.php?id=' . $item['product_code'] . '">
                                     <div class="card h-100">
@@ -69,7 +70,7 @@ $data = $conn->query($query);
                     <div class="d-flex justify-content-center small text-warning mb-2">
                     <div class="bi-star-fill"></div>
                     <span class="ms-1">'
-                        . $item['product_rating'] . '
+                        . $resultTernary  . '
                                             </span>
                 </div>';
                     echo '<p> RM ' . $item['product_price'] . "</p>";

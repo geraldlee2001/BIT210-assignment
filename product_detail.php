@@ -35,8 +35,6 @@ WHERE r.productId = \"$data[ID]\";";
   }
   $finalRating = $reviews->num_rows > 0 ? $totalRating / $reviews->num_rows : 0;
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -65,19 +63,16 @@ WHERE r.productId = \"$data[ID]\";";
 <body id="page-top">
   <!-- Navigation-->
   <?php include "./component/header.php" ?>
-
   <!-- content -->
   <section class="py-5 mt-6">
     <div class="container">
       <div class="row gx-5">
         <aside class="col-lg-6">
-
           <div class="border rounded-4 mb-3 d-flex justify-content-center">
             <a data-fslightbox="mygalley" class="rounded-4" data-type="image">
               <?php echo "<img src=\"$data[imageUrl]\" class=\"d-block w-100\" alt=\"Product 1\" width=\"500\" height=\"500\">" ?>
             </a>
           </div>
-
         </aside>
         <main class="col-lg-6">
           <div class="ps-lg-3">
@@ -93,17 +88,12 @@ WHERE r.productId = \"$data[ID]\";";
                 <span class="text-muted"><i class="fas fa-shopping-basket fa-sm mx-1"></i> <?php echo $data['amount']; ?> remains</span>
                 <span class="text-success ms-2">Available</span>
               </div>
-
               <div class="mb-3">
                 <?php echo "<span class=\"h5\">RM $data[price]</span>" ?>
-
               </div>
               <?php echo "<p class=\"mb-4\">$data[description]</p>" ?>
-
               <hr />
-
               <div class="row mb-4">
-
                 <div class="col-md-4 col-6 mb-3">
                   <label class="mb-2 d-block">Quantity</label>
                   <div class="input-group mb-3" style="width: 170px;">
@@ -125,13 +115,8 @@ WHERE r.productId = \"$data[ID]\";";
         </main>
       </div>
     </div>
-
-
   </section>
-
-
   <!-- Customer Review-->
-
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -141,8 +126,6 @@ WHERE r.productId = \"$data[ID]\";";
           </div>
           <div class="card-body">
             <div class="row">
-
-
               <?php
               while ($review = $reviews->fetch_assoc()) {
                 echo '   <div class="col-md-4">
@@ -167,10 +150,6 @@ WHERE r.productId = \"$data[ID]\";";
 ';
               }
               ?>
-
-
-
-
             </div>
           </div>
         </div>
