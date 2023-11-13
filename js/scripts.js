@@ -45,17 +45,16 @@ logoutButton.addEventListener("click", function () {
 
 // Implement actions for "Profile" and "Settings" buttons
 var profileButton = document.getElementById("profile-button");
-var settingsButton = document.getElementById("settings-button");
+var historyButton = document.getElementById("history-button");
 
 profileButton.addEventListener("click", function () {
   // Implement the profile action here
   window.location.href = "/profile.php";
 });
 
-settingsButton.addEventListener("click", function () {
+historyButton.addEventListener("click", function () {
   // Implement the settings action here
-  alert("Settings action");
-  modal.style.display = "none";
+  window.location.href = "/purchase_history.php";
 });
 
 window.addEventListener("DOMContentLoaded", (event) => {
@@ -101,6 +100,6 @@ window.addEventListener("DOMContentLoaded", (event) => {
   });
 });
 
-cartBtn .addEventListener("click", function () {
+cartBtn.addEventListener("click", function () {
   window.location.href = "/cart.php";
 });
