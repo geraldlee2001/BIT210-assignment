@@ -46,59 +46,38 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </div>
   </div>
   <div class="row mt-3">
-    <div class="col-sm-3"><!--left col-->
-      <div class="text-center">
-        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
-        <h6>Upload a different photo...</h6>
-        <input type="file" class="text-center center-block file-upload">
+    <div class="tab-content">
+      <div class="tab-pane active" id="home">
+        <hr>
+        <form class="form-horizontal" action="profile.php" method="post" id="registrationForm">
+
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" class="form-control" name="fullName" id="fullName" placeholder="Full name" title="Enter your full name">
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" title="Enter your email">
+          </div>
+
+          <div class="form-group">
+            <label for="phoneNumber">Phone</label>
+            <input type="text" class="form-control" name="phoneNumber" id="phoneNumber" placeholder="Enter phone" title="Enter your phone number if any.">
+          </div>
+
+          <div class="form-group">
+            <label for="birthday">Birthday</label>
+            <input type="date" class="form-control" name="birthday" id="birthday" placeholder="DD/MM/YYYY" title="Select your birthday">
+          </div>
+
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
       </div>
-      </hr><br>
-
-
-
-    </div><!--/col-3-->
-    <div class="col-sm-9">
-
-
-      <div class="tab-content">
-        <div class="tab-pane active" id="home">
-          <hr>
-          <form class="form-horizontal" action="profile.php" method="post" id="registrationForm">
-
-            <div class="form-group">
-              <label for="fullName">Full Name</label>
-              <input type="text" class="form-control" name="fullName" id="fullName" placeholder="Full name" title="Enter your full name">
-            </div>
-
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" title="Enter your email">
-            </div>
-
-            <div class="form-group">
-              <label for="phoneNumber">Phone</label>
-              <input type="text" class="form-control" name="phoneNumber" id="phoneNumber" placeholder="Enter phone" title="Enter your phone number if any.">
-            </div>
-
-            <div class="form-group">
-              <label for="birthday">Birthday</label>
-              <input type="date" class="form-control" name="birthday" id="birthday" placeholder="DD/MM/YYYY" title="Select your birthday">
-            </div>
-
-            <div class="form-group">
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-
-          </form>
-
-          <hr>
-
-        </div><!--/tab-pane-->
-      </div><!--/tab-pane-->
-    </div><!--/tab-content-->
-
-  </div><!--/col-9-->
-</div><!--/row-->
+    </div>
+  </div>
+</div>
 
 <script>
   document.querySelector("#submit").addEventListener("click", function() {

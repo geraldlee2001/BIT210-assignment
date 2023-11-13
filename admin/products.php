@@ -1,7 +1,8 @@
 <?php
+include '../php/tokenDecoding.php';
 include "../php/databaseConnection.php";
 // Retrieve data from customer table
-$query = "SELECT *FROM product";
+$query = $decoded->merchantId ? "SELECT *FROM product WHERE merchantId = '$decoded->merchantId'" : "SELECT *FROM product ";
 $data = $conn->query($query);
 ?>
 <!DOCTYPE html>
@@ -58,7 +59,8 @@ $data = $conn->query($query);
                                     echo "<td>" . $item['description']  . "</td>";
                                     echo "<td> RM " . $item['price']  . "</td>";
                                     echo "<td>" . $item["amount"] . "</td>";
-                                    echo "<td><a href='/admin/product_detail.php?id=" . $item["ID"] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
+                                    echo "<td><a href='/admin/product_detail.php?id=" . $item["ID"] . "' class='btn btn-primary btn-sm'>Edit</a> 
+                                    <a href='/admin/php/deleteProduct.php?id=" . $item["ID"] . "' class='btn btn-danger btn-sm'>Delete</a></td>";
                                     echo "</tr>";
                                 }
                                 ?>

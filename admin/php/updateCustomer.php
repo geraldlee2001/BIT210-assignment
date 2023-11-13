@@ -1,4 +1,6 @@
 <?php
+include '../../php/databaseConnection.php';
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   // Check if the username exists
   $fullName = $_POST['fullName']; // Replace with the username to check
@@ -12,8 +14,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   WHERE id = \"$customerId\"";
   echo $sql;
   if ($conn->query($sql) === TRUE) {
-    echo  "<script>alert('Registration Successful');</script>";
-    header('Location: ./customers.php'); // Redirect to a welcome page
+    echo  "<script>alert('Update Successful');</script>";
+    header('Location: /admin/index.php'); // Redirect to a welcome page
   } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
   }

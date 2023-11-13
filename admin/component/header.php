@@ -1,4 +1,10 @@
 <?php
+include '../php/tokenDecoding.php';
+if (!$decoded->userId && ($decoded->role !== 'ADMIN' || $decoded->role !== 'MERCHANT')) {
+    header('Location: ../admin/login.php'); // Redirect to the login page if the cookie is not present
+    exit;
+}
+
 echo '    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 <!-- Navbar Brand-->
 <a class="navbar-brand ps-3" href="index.php">Start Bootstrap</a>
@@ -21,7 +27,7 @@ echo '    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <li>
                 <hr class="dropdown-divider" />
             </li>
-            <li><a class="dropdown-item" href="#!">Logout</a></li>
+            <li><button class="dropdown-item" id="logout-button">Logout</button></li>
         </ul>
     </li>
 </ul>

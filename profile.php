@@ -57,25 +57,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </div>
   </div>
   <div class="row mt-3">
-    <div class="col-sm-3"><!--left col-->
-      <div class="text-center">
-        <img src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png" class="avatar img-circle img-thumbnail" alt="avatar">
-        <h6>Upload a different photo...</h6>
-        <input type="file" class="text-center center-block file-upload">
-      </div>
-      </hr><br>
-
-
-
-    </div><!--/col-3-->
-    <div class="col-sm-9">
-
-
+    <div class="col-sm-12">
       <div class="tab-content">
         <div class="tab-pane active" id="home">
           <hr>
           <form class="form-horizontal" action="profile.php" method="post" id="registrationForm">
-
             <div class="form-group">
               <label for="fullName">Full Name</label>
               <input type="text" class="form-control" name="fullName" id="fullName" placeholder="Full name" value="<?php echo $data['fullName'] ?>" title="Enter your full name">
@@ -108,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       </div><!--/tab-pane-->
     </div><!--/tab-content-->
 
-  </div><!--/col-9-->
+  </div>
 </div><!--/row-->
 
 <script>

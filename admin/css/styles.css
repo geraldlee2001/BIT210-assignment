@@ -13180,3 +13180,7 @@ body {
 .nav-link:hover {
   color: #ffc800;
 }
+
+.form-group {
+  margin-bottom: 10px;
+}

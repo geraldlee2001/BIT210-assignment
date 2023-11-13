@@ -37,6 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     if ($conn->query($sql) === TRUE) {
       echo  "<script>alert('Registration Successful');</script>";
+      $sql = "SELECT * FROM user WHERE id = '$id'";
+      $result = $conn->query($sql);
+      $user = $result->fetch_assoc();
       // Payload data
       $payload = array(
         "userId" => $user['id'],

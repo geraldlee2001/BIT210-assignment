@@ -20,6 +20,7 @@ $data = $result->fetch_assoc();
     <title>Product List</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
+    <script src="js/productDetail.js"></script>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
@@ -36,6 +37,7 @@ $data = $result->fetch_assoc();
                         <label for="name" class="form-label">Name</label>
                         <input type="text" class="form-control" id="name" name="name" value="<?php echo $data['name'] ?>">
                     </div>
+                    <?php echo $_SERVER['DOCUMENT_ROOT'] ?>
                     <div class="mb-3">
                         <label for="productCode" class="form-label">Product Code</label>
                         <input type="text" class="form-control" id="productCode" name="productCode" value="<?php echo $data['productCode'] ?>">
@@ -54,8 +56,8 @@ $data = $result->fetch_assoc();
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">Image</label>
-                        <input type="file" class="form-control" id="image" name="image">
-                        <img id="imagePreview" src="" alt="Preview">
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                        <img id="imagePreview" src="../<?php echo $data['imageUrl'] ?>" alt="Preview">
                     </div>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </form>
