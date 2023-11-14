@@ -15,6 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Securely hash the user's password and store it in the database
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    echo $hashedPassword;
     // Query the database to retrieve the user's information
     $query = "SELECT * FROM user WHERE userName = ?";
     $stmt = $conn->prepare($query);
@@ -35,11 +36,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $token = JWT::encode($payload, $key, 'HS256');
             setcookie("token",  $token, time() + 3600 * 60, "/", "localhost");
             header('Location: /admin/index.php'); // Redirect to a welcome page
-
-
-        } else {
-            // User is not an admin
-            echo "You are not an admin.";
+        } else if ($user['type'] === 'MERCHANT') {
+            $merchantQuery = "SELECT * FROM merchants WHERE userId = \"$user[id]\"";
+            $merchantQuery = $conn->query($merchantQuery);
+            $merchant = $merchantQuery->fetch_assoc();
+            if (!$merchant) {
+                header('Location: /admin/merchant_create.php'); // Redirect to a profile create page
+                return;
+            }
+            // Payload data
+            $payload = array(
+                "merchantId" => $merchant['ID'],
+                "userId" => $user['id'],
+                "username" =>  $user["userName"],
+                "role" => $user['type'],
+            );
+            // Generate the JWT
+            $token = JWT::encode($payload, $key, 'HS256');
+            setcookie("token",  $token, time() + 3600 * 60, "/", "localhost");
+            header('Location: /admin/products.php'); // Redirect to a welcome page
         }
     } else {
         // Invalid login credentials
@@ -76,8 +91,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 <div class="card-body">
                                     <form action="login.php" method="POST">
                                         <div class="form-floating mb-3">
-                                            <input class="form-control" id="username" name='username' placeholder="name@example.com" />
-                                            <label for="inputEmail">Email address</label>
+                                            <input class="form-control" id="username" name='username' placeholder="Username" />
+                                            <label for="inputEmail">Username</label>
                                         </div>
                                         <div class="form-floating mb-3">
                                             <input class="form-control" id="password" type="password" name='password' placeholder="Password" />
@@ -95,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     </form>
                                 </div>
                                 <div class="card-footer text-center py-3">
-                                    <div class="small"><a href="register.html">Need an account? Sign up!</a></div>
+                                    <div class="small"><a href="signup.php">Need an account? Sign up!</a></div>
                                 </div>
                             </div>
                         </div>

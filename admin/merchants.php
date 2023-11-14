@@ -7,7 +7,7 @@ $dbname = "malayantour";
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Retrieve data from customer table
-$query = "SELECT * FROM merchants";
+$query = "SELECT * FROM merchants WHERE NOT status = 'PENDING'";
 $data = $conn->query($query);
 
 ?>
@@ -48,18 +48,21 @@ $data = $conn->query($query);
                             <table id="datatablesSimple">
                                 <thead>
                                     <tr>
-                                        <th>Full Name</th>
-                                        <th>Birthday</th>
+                                        <th>Merchant Name</th>
                                         <th>Contact Number</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+
                                     </tr>
                                 </thead>
 
                                 <?php
                                 while ($item = $data->fetch_assoc()) {
                                     echo "<tr>";
-                                    echo "<td>" . $item["fullName"] . "</td>";
-                                    echo "<td>" . date_format(date_create($item["birthday"]), 'd/m/Y')  . "</td>";
-                                    echo "<td>" . $item["phoneNumber"] . "</td>";
+                                    echo "<td>" . $item["merchantName"] . "</td>";
+                                    echo "<td>" . $item["contactNumber"] . "</td>";
+                                    echo "<td>" . $item["status"] . "</td>";
+                                    echo "<td><a href='/admin/merchant_detail.php?id=" . $item["ID"] . "' class='btn btn-primary btn-sm'>Edit</a></td>";
                                     echo "</tr>";
                                 }
                                 ?>

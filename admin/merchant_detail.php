@@ -1,39 +1,33 @@
 <?php
 include "../php/databaseConnection.php";
 require_once '../vendor/autoload.php';
+include "../php/tokenDecoding.php";
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 // Your secret key (must match the one used for encoding)
 $key = 'bit210';
+$jwt = $_COOKIE['token']; // Replace with the actual JWT you want to decode
+$decoded = JWT::decode($jwt, new Key($key, 'HS256'));
+$query = "SELECT * FROM merchants where id = \"$_GET[id]\"";
+$result = $conn->query($query);
+$data = $result->fetch_assoc();
 
-// The JWT you want to decode\
-if ($_COOKIE['token']) {
-  $jwt = $_COOKIE['token']; // Replace with the actual JWT you want to decode
-  $decoded = JWT::decode($jwt, new Key($key, 'HS256'));
-  $query = "SELECT * FROM customer where id = \"$_GET[id]\"";
-  $result = $conn->query($query);
-  $data = $result->fetch_assoc();
-}
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
+  <title>Profile</title>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
-  <title><?php $data['fullName'] ?></title>
   <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
   <link href="css/styles.css" rel="stylesheet" />
-  <link href="../css/styles.css" rel="stylesheet" />
-
+  <script src="js/productDetail.js"></script>
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
+
+<link href="css/styles.css" rel="stylesheet" />
 
 <body class="sb-nav-fixed">
   <?php include "./component/header.php" ?>
@@ -44,7 +38,7 @@ if ($_COOKIE['token']) {
         <div class="container bootstrap snippet mt-3">
           <div class="row">
             <div class="col-sm-10">
-              <?php echo '<h1 >' . strtoupper($data['fullName']) . '</h1>' ?>
+              <?php echo '<h1 >' . strtoupper($data['merchantName']) . '</h1>' ?>
             </div>
           </div>
           <div class="row mt-3">
@@ -53,29 +47,24 @@ if ($_COOKIE['token']) {
               <div class="tab-content">
                 <div class="tab-pane active" id="home">
                   <hr>
-                  <form class="form-horizontal" action="./php/updateCustomer.php" method="post" id="registrationForm">
-                    <input type="hidden" name="customerId" value="<?php echo $_GET['id'] ?>">
+                  <form class="form-horizontal" action="./php/updateMerchant.php" method="post" id="registrationForm">
+                    <input type="hidden" name="merchantId" value="<?php echo $_GET['id'] ?>">
                     <div class="form-group">
-                      <label for="fullName">Full Name</label>
-                      <input type="text" class="form-control" name="fullName" id="fullName" placeholder="Full name" value="<?php echo $data['fullName'] ?>" title="Enter your full name">
+                      <label for="merchantName">Merchant Name</label>
+                      <input type="text" class="form-control" name="merchantName" id="merchantName" placeholder="Merchant Name" value="<?php echo $data['merchantName'] ?>" title="Enter your full name">
                     </div>
 
                     <div class="form-group">
-                      <label for="email">Email</label>
-                      <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" value="<?php echo $data['email'] ?>" title="Enter your email">
+                      <label for="contactNumber">Contact Number</label>
+                      <input type="contactNumber" class="form-control" name="contactNumber" id="contactNumber" placeholder="Enter Contact Number" value="<?php echo $data['contactNumber'] ?>" title="Enter your email">
                     </div>
 
                     <div class="form-group">
-                      <label for="phoneNumber">Phone</label>
-                      <input type="text" class="form-control" name="phoneNumber" id="phoneNumber" placeholder="Enter phone" value="<?php echo $data['phoneNumber'] ?>" title="Enter your phone number if any.">
+                      <label for="companyDescription">Company Description</label>
+                      <textarea class="form-control" id="companyDescription" name="companyDescription" rows="5"><?php echo $data['companyDescription'] ?></textarea>
                     </div>
 
-                    <div class="form-group">
-                      <label for="birthday">Birthday</label>
-                      <input type="date" class="form-control" name="birthday" id="birthday" placeholder="DD/MM/YYYY" title="Select your birthday" value="<?php echo $data['birthday'] ?>">
-                    </div>
-
-                    <div class="form-group">
+                    <div class="form-group mt-3">
                       <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
 

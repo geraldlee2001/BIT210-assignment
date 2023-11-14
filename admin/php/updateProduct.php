@@ -9,7 +9,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $price = $_POST['price'];
   $amount = $_POST['amount'];
   $productId = $_POST['productId'];
-  $sql = "UPDATE product SET name ='$name', productCode = '$productCode', description = '$description', price = '$price', amount = '$amount' WHERE id = \"$productId\"";
+  $imageFile = $_FILES['image'];
+
+  // If an image file was uploaded, save it to the server.
+  if ($imageFile['error'] === UPLOAD_ERR_OK) {
+    // Get the uploaded image file's name.
+    $imageName = $imageFile['name'];
+
+    // Get the uploaded image file's temporary path.
+    $imageTempPath = $imageFile['tmp_name'];
+
+    $destinationPath = __DIR__ . '/../../uploads/' . $imageName;
+    // Save the uploaded image file to the server.
+    move_uploaded_file($imageTempPath, $destinationPath);
+
+    $imageFilePath = 'uploads/' . $imageName;
+  }
+  $sql = "UPDATE product SET name ='$name', productCode = '$productCode', description = '$description', price = '$price',
+   amount = '$amount', imageUrl='$imageFilePath' WHERE id = \"$productId\"";
   echo $sql;
   $result = $conn->query($sql);
   if ($conn->query($sql) === TRUE) {

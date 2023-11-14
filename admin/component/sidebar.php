@@ -1,7 +1,10 @@
 <?php
 include "../php/tokenDecoding.php";
 $username =  $decoded->username;
-echo ' <div id="layoutSidenav_nav">
+$role = $decoded->role;
+switch ($role) {
+  case "ADMIN":
+    echo ' <div id="layoutSidenav_nav">
       <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
           <div class="nav">
@@ -18,6 +21,12 @@ echo ' <div id="layoutSidenav_nav">
               </div>
               Merchant
             </a>
+            <a class="nav-link" href="./pending_approved.php">
+            <div class="sb-nav-link-icon">
+              <i class="fas fa-tachometer-alt"></i>
+            </div>
+            Pending Approved
+          </a>
             <a class="nav-link" href="./products.php">
             <div class="sb-nav-link-icon">
               <i class="fas fa-tachometer-alt"></i>
@@ -31,6 +40,30 @@ echo ' <div id="layoutSidenav_nav">
           ' . $username . '
         </div>
       </nav>
-    </div>'; ?>
+    </div>';
+    break;
+  case "MERCHANT":
+    echo ' <div id="layoutSidenav_nav">
+    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+      <div class="sb-sidenav-menu">
+        <div class="nav">
+          <div class="sb-sidenav-menu-heading">Management</div>
+
+          <a class="nav-link" href="./products.php">
+          <div class="sb-nav-link-icon">
+            <i class="fas fa-tachometer-alt"></i>
+          </div>
+          Product
+        </a>
+        </div>
+      </div>
+      <div class="sb-sidenav-footer">
+        <div class="small">Logged in as:</div>
+        ' . $username . '
+      </div>
+    </nav>
+  </div>';
+    break;
+} ?>
 
 <link href="css/styles.css" rel="stylesheet" />

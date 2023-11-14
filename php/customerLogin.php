@@ -24,8 +24,6 @@ echo '<br>';
 echo $password . '<br>' . $user['password'];
 if ($user && password_verify($password, $user['password'])) {
   if ($user['type'] === 'CUSTOMER') {
-    setcookie('user', $username); // Cookie expires in 1 hour
-    // get customer id
     $customerQuery = "SELECT * FROM customer WHERE userId = \"$user[id]\"";
     $customerResult = $conn->query($customerQuery);
     $customer = $customerResult->fetch_assoc();
