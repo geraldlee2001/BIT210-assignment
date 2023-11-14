@@ -12,7 +12,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $sql = "UPDATE customer
   SET fullName =  '$fullName', email = '$email', phoneNumber = '$phoneNumber', birthday='$birthday'
   WHERE id = \"$customerId\"";
-  echo $sql;
   if ($conn->query($sql) === TRUE) {
     echo  "<script>alert('Update Successful');</script>";
     header('Location: /admin/index.php'); // Redirect to a welcome page

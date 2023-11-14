@@ -27,7 +27,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $sql = "UPDATE customer
   SET fullName =  '$fullName', email = '$email', phoneNumber = '$phoneNumber', birthday='$birthday'
   WHERE id = \"$decoded->customerId\"";
-  echo $sql;
   if ($conn->query($sql) === TRUE) {
     echo  "<script>alert('Registration Successful');</script>";
     header('Location: ../'); // Redirect to a welcome page

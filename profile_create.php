@@ -15,8 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $phoneNumber = $_POST['phoneNumber'];
   $birthday = $_POST['birthday'];
 
-  $sql = "INSERT INTO customer (id,fullName, email, phoneNumber, birthday,userId) VALUES ('$id','$fullName', '$email', '$phoneNumber', '$birthday','$decoded->userId')";
-  echo $sql;
+  $sql = "INSERT INTO customer (id,fullName, email, phoneNumber, birthday,userId)
+   VALUES ('$id','$fullName', '$email', '$phoneNumber', '$birthday','$decoded->userId')";
   if ($conn->query($sql) === TRUE) {
     echo  "<script>alert('Registration Successful');</script>";
     header('Location: ../'); // Redirect to a welcome page
