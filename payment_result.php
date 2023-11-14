@@ -18,6 +18,12 @@ $purchaseHistoryQuery = "INSERT INTO purchasehistory (id, cartId, customerId, to
 $conn->query($purchaseHistoryQuery);
 $cartResult = $conn->query($cartQuery);
 $cartQuery = "INSERT INTO cart (id, customerId, status,code) VALUES ('$id', '$decoded->customerId', 'ADDING','$code')";
+$productQuery = " UPDATE product
+JOIN cartitem ON product.id = cartitem.productId
+JOIN cartcartitem ON cartitem.id = cartcartitem.cart_item_id
+SET product.amount = product.amount - cartitem.quantity
+WHERE cartcartitem.cart_id = \"$decoded->cartId\"";
+$conn->query($productQuery);
 $conn->query($cartQuery);
 $payload = array(
   "customerId" => $decoded->customerId,

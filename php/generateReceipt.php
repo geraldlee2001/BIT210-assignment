@@ -59,6 +59,7 @@ class ReceiptPDF extends TCPDF
 
         $this->SetFont('times', '', 12);
         $this->Cell(0, 10, 'Customer Name: ' . $customerName, 0, 1);
+        $this->Cell(0, 10, 'Order code: ' . $cartData['code'], 0, 1);
 
         $this->Cell(0, 10, '', 0, 1); // Add spacing
 

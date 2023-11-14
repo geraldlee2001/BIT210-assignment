@@ -39,9 +39,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $rating = $_POST['rating'];
   $sql = "INSERT INTO review (id,description,cartItemId,productId, customerId, rating) 
   VALUES ('$id','$description','$cartItemId','$productId', '$decoded->customerId', '$rating')";
-  $result = $conn->query($sql);
-  if (!$conn->query($sql))
-    echo "Error: " . $sql . "<br>" . $conn->error;
+  if ($conn->query($sql) === TRUE) {
+    echo "<script>alert('Review Successful');</script>";
+  } else echo "Error: " . $sql . "<br>" . $conn->error;
 }
 // Organize order data
 $orders = array();
@@ -50,6 +50,7 @@ if ($result->num_rows > 0) {
     $orderCode = $row['cartCode'];
     $cartItemId = $row['cartItemId'];
     $productId = $row['productId'];
+    $cartId = $row['cartId'];
     $reviewSql = "SELECT * FROM review WHERE cartItemId = '$cartItemId' AND customerId = '$decoded->customerId'";
     $reviewResult = $conn->query($reviewSql);
     $review = $reviewResult->fetch_assoc();
@@ -75,6 +76,7 @@ if ($result->num_rows > 0) {
       'cartItemId' => $cartItemId,
       'isReviewed' => isset($isReviewed),
       'purchasedAt' => $purchasedAt,
+      'cartId' => $cartId,
     );
   }
 }
@@ -119,8 +121,11 @@ if ($result->num_rows > 0) {
           <?php foreach ($orders as $orderCode => $orderItems) : ?>
             <div class="history-item ">
               <div class="d-flex justify-content-between align-items-center mb-4">
-                <?php echo '<h2> Order Code: #' . $orderCode . '</h2 style="text-align:right;">' ?>
-                <p>Purhcased at: <?php echo $orderItems[0]['purchasedAt'] ?></p>
+                <div>
+                  <?php echo '<h2> Order Code: #' . $orderCode . '</h2 style="text-align:right;">' ?>
+                  <p>Purhcased at: <?php echo $orderItems[0]['purchasedAt'] ?></p>
+                </div>
+                <a class="btn btn-primary align-self-center" href="/php/generateReceipt.php?id=<?php echo $orderItems[0]['cartId' ] ?>">Generate receipt</a>
               </div>
               <?php foreach ($orderItems as $orderItem) : ?>
                 <div class="history-item-details">
@@ -145,7 +150,7 @@ if ($result->num_rows > 0) {
         </div>
       </div>
     </div>
-    <div class="ratingModal p-3" id="reviewModal">
+    <div class=" ratingModal p-3" id="reviewModal">
       <div class="ratingModal-header d-flex flex-row justify-content-between ">
         <div class="title">Customer review</div>
         <button data-close-button class="btn btn-light" onclick='onCloseModal()'>&times;</button>
