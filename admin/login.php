@@ -15,7 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Securely hash the user's password and store it in the database
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-    echo $hashedPassword;
     // Query the database to retrieve the user's information
     $query = "SELECT * FROM user WHERE userName = ?";
     $stmt = $conn->prepare($query);
@@ -24,7 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
     if ($user && password_verify($password, $user['password'])) {
-        echo $user['type'];
         if ($user['type'] === 'ADMIN') {
             // Payload data
             $payload = array(

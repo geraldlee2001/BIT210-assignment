@@ -1,10 +1,10 @@
 <?php
 include "../php/databaseConnection.php";
-// Retrieve data from customer table
+include "../php/tokenDecoding.php";
 
-$query = "SELECT *FROM product where id = \"$_GET[id]\"";
-$result = $conn->query($query);
-$data = $result->fetch_assoc();
+
+$merchantSql = "SELECT * FROM merchants";
+$merchantResult = $conn->query($merchantSql);
 
 ?>
 
@@ -30,35 +30,49 @@ $data = $result->fetch_assoc();
         <?php include "./component/sidebar.php" ?>
         <div id="layoutSidenav_content">
             <main>
-                <h1 class="text-center">Product Detail</h1><br>
-                <form id="productForm" action="./php/updateProduct.php" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="productId" value="<?php echo $_GET['id'] ?>">
+                <h1 class="text-center">Create Product</h1><br>
+                <form id="productForm" action="./php/createProduct.php" method='post' enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" value="<?php echo $data['name'] ?>">
+                        <input type="text" class="form-control" id="name" name="name">
                     </div>
                     <div class="mb-3">
                         <label for="productCode" class="form-label">Product Code</label>
-                        <input type="text" class="form-control" id="productCode" name="productCode" value="<?php echo $data['productCode'] ?>">
+                        <input type="text" class="form-control" id="productCode" name="productCode">
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="5"><?php echo $data['description'] ?></textarea>
+                        <textarea class="form-control" id="description" name="description" rows="5"></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="price" class="form-label">Price</label>
-                        <input type="number" class="form-control" id="price" name="price" value="<?php echo $data['price'] ?>">
+                        <input type="number" class="form-control" id="price" name="price">
                     </div>
                     <div class="mb-3">
                         <label for="amount" class="form-label">Amount</label>
-                        <input type="number" class="form-control" id="amount" name="amount" value="<?php echo $data['amount'] ?>">
+                        <input type="number" class="form-control" id="amount" name="amount">
                     </div>
+                    <?php if ($decoded->role === "ADMIN") : ?>
+                        <div class="mb-3">
+                            <label for="merchantId" class="form-label">Merchants</label>
+                            <select name=" merchantId" id="merchantId" class="form-control">
+                                <?php
+                                while ($item = $merchantResult->fetch_assoc()) {
+                                    echo " <option value=" . $item['ID'] . ">" . $item['merchantName'] . "</option>";
+                                } ?>
+                            </select>
+
+                        </div>
+                    <?php else : ?>
+                        <input type="hidden" class="form-control" id="amount" name="merchantId" value="<?php echo $decoded->merchantId ?>">
+                    <?php endif; ?>
+
                     <div class="mb-3">
                         <label for="image" class="form-label">Image</label>
                         <input type="file" class="form-control" id="image" name="image" accept="image/*">
                         <img id="imagePreview" src="../<?php echo $data['imageUrl'] ?>" alt="Preview">
                     </div>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
                 </form>
 
             </main>

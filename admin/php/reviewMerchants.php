@@ -7,7 +7,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $sql = "UPDATE merchants
     SET status =  '$status'
     WHERE id = \"$merchantId\"";
-  echo  $sql;
   if ($conn->query($sql) === TRUE) {
     echo  "<script>alert('Update Successful');</script>";
     header('Location: /admin/pending_approved.php');

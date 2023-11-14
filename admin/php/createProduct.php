@@ -1,6 +1,10 @@
 <?php
-require_once '../../vendor/autoload.php';
 include '../../php/databaseConnection.php';
+require_once '../../vendor/autoload.php';
+
+use Ramsey\Uuid\Uuid;
+
+$id = Uuid::uuid4();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $name = $_POST['name'];
@@ -8,8 +12,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
   $description = $_POST['description'];
   $price = $_POST['price'];
   $amount = $_POST['amount'];
-  $productId = $_POST['productId'];
   $imageFile = $_FILES['image'];
+  $merchantId = $_POST['merchantId'];
 
   // If an image file was uploaded, save it to the server.
   if ($imageFile['error'] === UPLOAD_ERR_OK) {
@@ -25,11 +29,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $imageFilePath = 'uploads/' . $imageName;
   }
-  $sql = "UPDATE product SET name ='$name', productCode = '$productCode', description = '$description', price = '$price',
-   amount = '$amount', imageUrl='$imageFilePath' WHERE id = \"$productId\"";
-  $result = $conn->query($sql);
+  $sql = "INSERT INTO product (id, name,productCode,description,price,amount,imageUrl,merchantID) 
+  VALUES('$id','$name','$productCode','$description','$price','$amount','$imageFilePath','$merchantId')";
   if ($conn->query($sql) === TRUE) {
-    echo  "<script>alert('Update Successful');</script>";
+    echo  "<script>alert('Create Successful');</script>";
     header('Location: /admin/products.php');
   } else {
     echo "Error: " . $sql . "<br>" . $conn->error;

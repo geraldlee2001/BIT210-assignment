@@ -19,9 +19,6 @@ $result = $conn->query($query);
 $user = $result->fetch_assoc();
 $code = bin2hex(random_bytes(15));
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-echo $hashedPassword;
-echo '<br>';
-echo $password . '<br>' . $user['password'];
 if ($user && password_verify($password, $user['password'])) {
   if ($user['type'] === 'CUSTOMER') {
     $customerQuery = "SELECT * FROM customer WHERE userId = \"$user[id]\"";

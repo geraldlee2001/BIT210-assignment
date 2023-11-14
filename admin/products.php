@@ -1,8 +1,7 @@
 <?php
 include '../php/tokenDecoding.php';
 include "../php/databaseConnection.php";
-// Retrieve data from customer table
-$query = $decoded->merchantId ? "SELECT *FROM product WHERE merchantId = '$decoded->merchantId'" : "SELECT *FROM product ";
+$query = @!!isset($decoded->merchantId) ? "SELECT *FROM product WHERE merchantId = '$decoded->merchantId'" : "SELECT *FROM product ";
 $data = $conn->query($query);
 ?>
 <!DOCTYPE html>
@@ -34,9 +33,12 @@ $data = $conn->query($query);
                     </ol>
 
                     <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            Product List
+                        <div class="card-header d-flex flex-row justify-content-between align-items-center">
+                            <div>
+                                <i class="fas fa-table me-1"></i>
+                                Product List
+                            </div>
+                            <a class='btn btn-primary' href="/admin/product_create.php"> Create </a>
                         </div>
                         <div class="card-body">
                             <table id="datatablesSimple">
