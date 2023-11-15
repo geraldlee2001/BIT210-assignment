@@ -88,7 +88,7 @@ $conn->close();
   <!-- Navigation-->
   <nav class="navbar bg-dark" id="mainNav">
     <div class="container">
-      <a class="navbar-brand" href="./"><img src="assets/img/navbar-logo.svg" alt="..." /></a>
+      <a class="navbar-brand" href="./"> <img src="images/Logo Creator (Community) (1).png" alt="..." width="50" style="margin-right: 10px;" />TripAdvisor</a>
     </div>
   </nav>
 
