@@ -4313,7 +4313,7 @@ fieldset:disabled .btn {
   padding-top: var(--bs-navbar-brand-padding-y);
   padding-bottom: var(--bs-navbar-brand-padding-y);
   margin-right: var(--bs-navbar-brand-margin-end);
-  font-size: var(--bs-navbar-brand-font-size);
+  font-size: 17px !important;
   color: var(--bs-navbar-brand-color);
   text-decoration: none;
   white-space: nowrap;
@@ -12694,7 +12694,7 @@ p {
 }
 
 #mainNav .navbar-brand img {
-  height: 1.5rem;
+  height: 50px !important;
 }
 
 #mainNav .navbar-nav .nav-item .nav-link {
@@ -12714,7 +12714,6 @@ p {
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
     border: none;
-    background-color: transparent;
     transition: padding-top 0.3s ease-in-out, padding-bottom 0.3s ease-in-out;
   }
 
