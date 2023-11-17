@@ -39,7 +39,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $merchantQuery = $conn->query($merchantQuery);
             $merchant = $merchantQuery->fetch_assoc();
             if (!$merchant) {
+                $payload = array(
+                    "merchantId" => null,
+                    "userId" => $user['id'],
+                    "username" =>  $user["userName"],
+                    "role" => $user['type'],
+                );
+                $token = JWT::encode($payload, $key, 'HS256');
+                setcookie("token",  $token, time() + 3600 * 60, "/", "localhost");
                 header('Location: /admin/merchant_create.php'); // Redirect to a profile create page
+                return;
+            }
+            if ($merchant['status'] === "PENDING") {
+                echo "<script>alert('Account still in pending');
+                </script>";
+                return;
+            } else if ($merchant['status'] === "REJECTED") {
+                echo "<script>alert('Account get rejected, contact customer service to know more');</script>";
                 return;
             }
             // Payload data
@@ -53,10 +69,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $token = JWT::encode($payload, $key, 'HS256');
             setcookie("token",  $token, time() + 3600 * 60, "/", "localhost");
             header('Location: /admin/products.php'); // Redirect to a welcome page
+
         }
     } else {
         // Invalid login credentials
-        echo "Invalid username or password.";
+        echo "<script>alert('Invalid username or password.');</script>";
     }
 }
 ?>

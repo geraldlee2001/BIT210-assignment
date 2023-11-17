@@ -52,9 +52,9 @@ if ($user && password_verify($password, $user['password'])) {
 
   } else {
     // User is not an admin
-    echo "You are not a customer.";
+    echo "<script>alert('You are not a customer.');</script>";
   }
 } else {
   // Invalid login credentials
-  echo "Invalid username or password.";
+  echo "<script>alert('Invalid username or password.');</script>";
 }
